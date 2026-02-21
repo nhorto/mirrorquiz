@@ -1,0 +1,26 @@
+{
+  "name": "perception-quiz",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "perception-quiz-db",
+      "database_id": "LOCAL_DEV_DB"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "OG_CACHE",
+      "id": "LOCAL_DEV_KV"
+    }
+  ],
+  "vars": {
+    "ENVIRONMENT": "development"
+  }
+}
