@@ -10,6 +10,118 @@ Right now, MirrorQuiz only uses **CI** (automated checks). Deployment is done ma
 
 ---
 
+## What is a CI/CD Pipeline?
+
+A **pipeline** is just a series of steps that your code goes through automatically before it reaches your users. Think of it like an assembly line in a factory:
+
+```
+Raw materials → Quality check → Assembly → Final inspection → Ship to customer
+```
+
+For software, it looks like this:
+
+```
+Your code → Lint → Type check → Build → Test → Deploy
+```
+
+Each step is a **gate**. If any gate fails, the code stops moving forward and doesn't reach your users. This prevents broken code from ever going live.
+
+### Why Does This Matter?
+
+Without a pipeline, the process looks like this:
+
+1. You write code
+2. You push it to GitHub
+3. You manually deploy to your live site
+4. Users find bugs
+5. You panic and fix them
+
+With a pipeline:
+
+1. You write code
+2. You push it to GitHub
+3. **Automated checks catch problems before deployment**
+4. You deploy (manually or automatically) only when checks pass
+5. Users get working code
+
+The key insight: **a pipeline catches your mistakes before your users do.**
+
+### Stages of a Typical Pipeline
+
+Most CI/CD pipelines have these stages, in order:
+
+| Stage | What It Does | MirrorQuiz Status |
+|-------|-------------|-------------------|
+| **Lint** | Checks code style and common mistakes | Active |
+| **Type Check** | Validates TypeScript types | Active |
+| **Unit Tests** | Tests individual functions in isolation | Not set up yet |
+| **Build** | Compiles the app to make sure it can build | Not in CI (you do this manually) |
+| **Integration Tests** | Tests features working together | Not set up yet |
+| **Deploy to Staging** | Publishes to a test environment | Not set up (don't need it yet) |
+| **Deploy to Production** | Publishes to the live site | Manual (you run `bunx wrangler deploy`) |
+
+You don't need every stage right now. As your project grows and you have more users, you add more stages. Here's a realistic timeline:
+
+- **Now (solo developer, pre-launch):** Lint + type check in CI, manual deploy. This is where you are.
+- **After launch (real users):** Add automated deploy so pushing to main updates the site automatically.
+- **Growing (multiple features in progress):** Add unit tests so you know new code doesn't break old features.
+- **Scaling (team or complex features):** Add staging environment to test changes before they hit production.
+
+### How a Pipeline Flows
+
+Pipelines have a concept called **dependencies** — one step can't start until the previous one finishes. This is the "pipeline" part. It flows in one direction:
+
+```
+Push to GitHub
+      │
+      ▼
+┌─────────────┐
+│  Lint &      │  ← If this fails, everything stops.
+│  Type Check  │     You see a red X on GitHub.
+└──────┬──────┘
+       │ (passes)
+       ▼
+┌─────────────┐
+│   Build     │  ← Only runs if checks passed.
+└──────┬──────┘
+       │ (passes)
+       ▼
+┌─────────────┐
+│   Deploy    │  ← Only runs if build passed.
+│ (Production)│     Your site updates.
+└─────────────┘
+```
+
+If lint fails, the build never runs. If the build fails, deploy never runs. Each stage is a gatekeeper.
+
+### How This Applies to MirrorQuiz Specifically
+
+Your app runs on **Cloudflare Workers**. The deployment process is:
+
+1. **Build:** `bunx opennextjs-cloudflare build` — takes your Next.js app and compiles it into a format Cloudflare Workers can run
+2. **Deploy:** `bunx wrangler deploy` — uploads that compiled code to Cloudflare's servers around the world
+
+Your **database** (Cloudflare D1) and **secrets** (API keys) live separately on Cloudflare — they don't get redeployed with your code. This means:
+
+- Deploying new code **does not** affect your database or lose data
+- Deploying new code **does not** change your environment variables
+- You can deploy as many times as you want safely
+- If you deploy broken code, your database is still fine
+
+The only thing deployment changes is the **application code** — the pages, API routes, and logic.
+
+### What "Environment" Means
+
+You'll hear the word "environment" a lot. It just means "a copy of your app running somewhere." Common environments:
+
+- **Local** (`localhost:3000`) — your computer, for development. Uses `.dev.vars` for secrets.
+- **Staging** — a test copy on the internet that only you can see. Same code as production but separate database. (You don't have this.)
+- **Production** (`mirrorquiz.com`) — the real thing. Uses secrets set via `wrangler secret put`.
+
+Each environment can have different settings. For example, your local environment uses a fake auth secret (`dev-secret-change-me`) while production uses a real one.
+
+---
+
 ## How It Works for MirrorQuiz
 
 ### The File
