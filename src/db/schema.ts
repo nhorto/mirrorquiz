@@ -1,35 +1,70 @@
-import { sqliteTable, text, integer, real, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
-// ─── Users (quiz creators) ───────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+// Better Auth tables (managed by Better Auth, DO NOT modify structure)
+// ═══════════════════════════════════════════════════════════════════════
+
 export const users = sqliteTable("users", {
-  id: text("id").primaryKey(), // nanoid
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  name: text("name"),
-  createdAt: text("created_at")
-    .notNull()
-    .default(sql`(datetime('now'))`),
+  emailVerified: integer("email_verified", { mode: "boolean" }).notNull(),
+  image: text("image"),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
 });
 
-// ─── Sessions (auth) ────────────────────────────────────────────────
 export const sessions = sqliteTable("sessions", {
   id: text("id").primaryKey(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  token: text("token").notNull().unique(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  expiresAt: text("expires_at").notNull(),
-  createdAt: text("created_at")
-    .notNull()
-    .default(sql`(datetime('now'))`),
 });
 
-// ─── Magic Links ─────────────────────────────────────────────────────
-export const magicLinks = sqliteTable("magic_links", {
+export const accounts = sqliteTable("accounts", {
   id: text("id").primaryKey(),
-  email: text("email").notNull(),
-  token: text("token").notNull().unique(),
-  expiresAt: text("expires_at").notNull(),
-  usedAt: text("used_at"),
+  accountId: text("account_id").notNull(),
+  providerId: text("provider_id").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  idToken: text("id_token"),
+  accessTokenExpiresAt: integer("access_token_expires_at", { mode: "timestamp" }),
+  refreshTokenExpiresAt: integer("refresh_token_expires_at", { mode: "timestamp" }),
+  scope: text("scope"),
+  password: text("password"),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+});
+
+export const verifications = sqliteTable("verifications", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }),
+  updatedAt: integer("updated_at", { mode: "timestamp" }),
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// App tables (our domain models)
+// ═══════════════════════════════════════════════════════════════════════
+
+// ─── Question Sets ───────────────────────────────────────────────────
+export const questionSets = sqliteTable("question_sets", {
+  id: text("id").primaryKey(),
+  version: integer("version").notNull(),
+  label: text("label").notNull(),
+  isActive: integer("is_active", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(datetime('now'))`),
@@ -38,9 +73,12 @@ export const magicLinks = sqliteTable("magic_links", {
 // ─── Questions ───────────────────────────────────────────────────────
 export const questions = sqliteTable("questions", {
   id: text("id").primaryKey(),
-  category: text("category").notNull(), // e.g., "openness", "empathy"
-  textSelf: text("text_self").notNull(), // "I am adventurous"
-  textFriend: text("text_friend").notNull(), // "This person is adventurous"
+  questionSetId: text("question_set_id")
+    .notNull()
+    .references(() => questionSets.id),
+  category: text("category").notNull(),
+  textSelf: text("text_self").notNull(),
+  textFriend: text("text_friend").notNull(),
   sortOrder: integer("sort_order").notNull(),
   createdAt: text("created_at")
     .notNull()
@@ -53,8 +91,11 @@ export const quizzes = sqliteTable("quizzes", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  questionSetId: text("question_set_id")
+    .notNull()
+    .references(() => questionSets.id),
   slug: text("slug").notNull().unique(),
-  title: text("title"), // optional custom title
+  title: text("title"),
   responseCount: integer("response_count").notNull().default(0),
   createdAt: text("created_at")
     .notNull()
@@ -72,16 +113,13 @@ export const selfResponses = sqliteTable(
     questionId: text("question_id")
       .notNull()
       .references(() => questions.id),
-    score: integer("score").notNull(), // 1-5
+    score: integer("score").notNull(),
     createdAt: text("created_at")
       .notNull()
       .default(sql`(datetime('now'))`),
   },
   (table) => [
-    uniqueIndex("self_responses_quiz_question").on(
-      table.quizId,
-      table.questionId
-    ),
+    uniqueIndex("self_responses_quiz_question").on(table.quizId, table.questionId),
   ]
 );
 
@@ -93,17 +131,16 @@ export const respondents = sqliteTable(
     quizId: text("quiz_id")
       .notNull()
       .references(() => quizzes.id, { onDelete: "cascade" }),
-    displayName: text("display_name"), // optional nickname
+    displayName: text("display_name"),
     browserToken: text("browser_token").notNull(),
+    ipHash: text("ip_hash"),
     createdAt: text("created_at")
       .notNull()
       .default(sql`(datetime('now'))`),
   },
   (table) => [
-    uniqueIndex("respondents_quiz_browser").on(
-      table.quizId,
-      table.browserToken
-    ),
+    uniqueIndex("respondents_quiz_browser").on(table.quizId, table.browserToken),
+    uniqueIndex("respondents_quiz_ip").on(table.quizId, table.ipHash),
   ]
 );
 
@@ -121,7 +158,7 @@ export const friendResponses = sqliteTable(
     questionId: text("question_id")
       .notNull()
       .references(() => questions.id),
-    score: integer("score").notNull(), // 1-5
+    score: integer("score").notNull(),
     createdAt: text("created_at")
       .notNull()
       .default(sql`(datetime('now'))`),
@@ -145,7 +182,7 @@ export const purchases = sqliteTable("purchases", {
     .references(() => quizzes.id, { onDelete: "cascade" }),
   stripeSessionId: text("stripe_session_id").unique(),
   amountCents: integer("amount_cents").notNull(),
-  status: text("status").notNull().default("pending"), // pending, completed, refunded
+  status: text("status").notNull().default("pending"),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(datetime('now'))`),
@@ -161,7 +198,7 @@ export const emailNotifications = sqliteTable("email_notifications", {
   quizId: text("quiz_id")
     .notNull()
     .references(() => quizzes.id, { onDelete: "cascade" }),
-  type: text("type").notNull(), // "new_response", "results_ready"
+  type: text("type").notNull(),
   sentAt: text("sent_at")
     .notNull()
     .default(sql`(datetime('now'))`),

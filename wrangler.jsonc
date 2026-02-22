@@ -1,26 +1,28 @@
 {
-  "name": "perception-quiz",
-  "main": ".open-next/worker.js",
-  "compatibility_date": "2025-04-01",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "perception-quiz-db",
-      "database_id": "LOCAL_DEV_DB"
-    }
-  ],
-  "kv_namespaces": [
-    {
-      "binding": "OG_CACHE",
-      "id": "LOCAL_DEV_KV"
-    }
-  ],
-  "vars": {
-    "ENVIRONMENT": "development"
-  }
+	"name": "perception-quiz",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-04-01",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "perception-quiz-db",
+			"database_id": "b1c3a6a5-aca5-474d-9acf-cbf8c2da241e"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "OG_CACHE",
+			"id": "d3dc14b78c9f4213a5b78bfa031768ba"
+		}
+	],
+	"vars": {
+		"ENVIRONMENT": "development"
+	}
 }

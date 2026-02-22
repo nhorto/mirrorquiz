@@ -29,6 +29,19 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
+  /* Playful accent palette */
+  --color-violet: var(--violet);
+  --color-fuchsia: var(--fuchsia);
+  --color-amber: var(--amber);
+  --color-teal: var(--teal);
+  --color-rose: var(--rose);
+
+  /* Surface tints */
+  --color-surface-violet: var(--surface-violet);
+  --color-surface-fuchsia: var(--surface-fuchsia);
+  --color-surface-amber: var(--surface-amber);
+  --color-surface-teal: var(--surface-teal);
 }
 
 :root {
@@ -55,6 +68,19 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+
+  /* Playful accents */
+  --violet: oklch(0.553 0.215 280);
+  --fuchsia: oklch(0.592 0.249 328);
+  --amber: oklch(0.769 0.188 70.08);
+  --teal: oklch(0.6 0.118 184.704);
+  --rose: oklch(0.645 0.246 16.439);
+
+  /* Surface tints */
+  --surface-violet: oklch(0.97 0.02 280);
+  --surface-fuchsia: oklch(0.97 0.02 328);
+  --surface-amber: oklch(0.97 0.02 70);
+  --surface-teal: oklch(0.97 0.02 184);
 }
 
 .dark {
@@ -81,6 +107,19 @@
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+
+  /* Playful accents (brighter for dark mode) */
+  --violet: oklch(0.65 0.215 280);
+  --fuchsia: oklch(0.68 0.249 328);
+  --amber: oklch(0.82 0.188 70.08);
+  --teal: oklch(0.7 0.118 184.704);
+  --rose: oklch(0.72 0.246 16.439);
+
+  /* Surface tints (darker) */
+  --surface-violet: oklch(0.2 0.03 280);
+  --surface-fuchsia: oklch(0.2 0.03 328);
+  --surface-amber: oklch(0.2 0.03 70);
+  --surface-teal: oklch(0.2 0.03 184);
 }
 
 @layer base {
@@ -90,4 +129,22 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Gradient utilities */
+.gradient-brand {
+  background: linear-gradient(135deg, var(--violet), var(--fuchsia));
+}
+
+.gradient-brand-text {
+  background: linear-gradient(135deg, var(--violet), var(--fuchsia));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-glow {
+  box-shadow:
+    0 0 20px oklch(0.553 0.215 280 / 0.3),
+    0 0 40px oklch(0.592 0.249 328 / 0.15);
 }
