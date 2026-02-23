@@ -71,7 +71,7 @@ export default function LoginPage() {
           </Link>
           <h1 className="mt-6 text-2xl font-bold">Sign in</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Enter your email and we&apos;ll send you a magic link.
+            Enter your email and we&apos;ll send you a sign-in link.
           </p>
         </div>
 
@@ -94,12 +94,23 @@ export default function LoginPage() {
           )}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Sending..." : "Send Magic Link"}
+            {loading ? "Sending..." : "Continue with Email"}
           </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
-          No password needed. We&apos;ll email you a secure link.
+          No password needed. We&apos;ll email you a secure sign-in link.
+        </p>
+        <p className="mt-3 text-center text-xs text-muted-foreground">
+          By signing in, you agree to our{" "}
+          <Link href="/terms" className="underline underline-offset-4 hover:text-foreground">
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="underline underline-offset-4 hover:text-foreground">
+            Privacy Policy
+          </Link>
+          .
         </p>
       </div>
     </div>

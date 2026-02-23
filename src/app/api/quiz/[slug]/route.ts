@@ -18,6 +18,7 @@ export async function GET(
       slug: schema.quizzes.slug,
       title: schema.quizzes.title,
       creatorName: schema.users.name,
+      creatorEmail: schema.users.email,
     })
     .from(schema.quizzes)
     .innerJoin(schema.users, eq(schema.quizzes.userId, schema.users.id))
@@ -28,5 +29,16 @@ export async function GET(
     return NextResponse.json({ error: "Quiz not found" }, { status: 404 });
   }
 
-  return NextResponse.json(results[0]);
+  const row = results[0]!;
+  const creatorName =
+    row.creatorName && row.creatorName.trim()
+      ? row.creatorName
+      : row.creatorEmail?.split("@")[0] ?? "Someone";
+
+  return NextResponse.json({
+    quizId: row.quizId,
+    slug: row.slug,
+    title: row.title,
+    creatorName,
+  });
 }

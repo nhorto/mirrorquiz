@@ -22,7 +22,11 @@
 			"id": "d3dc14b78c9f4213a5b78bfa031768ba"
 		}
 	],
+	"routes": [
+		{ "pattern": "mirrorquiz.com", "custom_domain": true },
+		{ "pattern": "www.mirrorquiz.com", "custom_domain": true }
+	],
 	"vars": {
-		"ENVIRONMENT": "development"
+		"ENVIRONMENT": "production"
 	}
 }

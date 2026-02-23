@@ -26,14 +26,14 @@ export default function LandingPage() {
 
         <div className="relative mx-auto max-w-2xl">
           <div className="mb-6 inline-block rounded-full bg-violet/10 px-4 py-1.5 text-sm font-medium text-violet">
-            95% of people think they&rsquo;re self-aware. Only 10% are.
+            Most people think they&rsquo;re self-aware. Very few actually are.
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-7xl">
-            You think you know yourself.{" "}
-            <span className="gradient-brand-text">Your friends disagree.</span>
+            Your blind spots aren&rsquo;t a secret.{" "}
+            <span className="gradient-brand-text">They&rsquo;re just a secret from you.</span>
           </h1>
           <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-            Research shows we have massive blind spots about our own personality.
+            We all have blind spots about our own personality.
             The traits you&rsquo;re most proud of might not register with the people
             around you &mdash; and your real superpower might be something you take
             for granted.
@@ -62,7 +62,7 @@ export default function LandingPage() {
       <section id="how-it-works" className="bg-surface-violet py-24">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-center text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Dead simple. <span className="gradient-brand-text">Brutally honest.</span>
+            Three steps. <span className="gradient-brand-text">Zero sugarcoating.</span>
           </h2>
           <div className="mt-14 grid gap-8 sm:grid-cols-3">
             <StepCard
@@ -91,7 +91,7 @@ export default function LandingPage() {
       <section className="bg-background py-24">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            This isn&rsquo;t a <span className="gradient-brand-text">BuzzFeed quiz</span>
+            This isn&rsquo;t a <span className="gradient-brand-text">viral personality quiz</span>
           </h2>
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
             In the 1950s, psychologists Joseph Luft and Harrington Ingham created
@@ -121,7 +121,7 @@ export default function LandingPage() {
             <ValueCard
               icon="🔍"
               title="Blind Spots"
-              description="Traits you rate highly but others don&rsquo;t see. Research shows we overestimate the qualities we value most in ourselves."
+              description="Traits you rate highly but others don&rsquo;t see. We tend to overestimate the qualities we value most in ourselves."
               accentColor="rose"
             />
             <ValueCard
@@ -133,7 +133,7 @@ export default function LandingPage() {
             <ValueCard
               icon="📊"
               title="The Perception Gap"
-              description="Studies show self-ratings and friend-ratings correlate at only 0.4. Your radar chart reveals exactly where your gaps are."
+              description="Self-ratings and friend-ratings often diverge more than you&rsquo;d expect. Your radar chart reveals exactly where your gaps are."
               accentColor="violet"
             />
             <ValueCard
@@ -236,7 +236,7 @@ export default function LandingPage() {
                 <span className="text-muted-foreground">one-time</span>
               </div>
               <p className="mt-3 text-muted-foreground">
-                Less than two lattes. Lasts longer than therapy.
+                Cheaper than a personality test. Way more fun.
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 See exactly which traits you overestimate, which ones you undervalue,
@@ -287,16 +287,16 @@ export default function LandingPage() {
           </h2>
           <div className="mt-14 grid gap-8 sm:grid-cols-2">
             <FaqItem
-              question="Will my friends actually be honest?"
+              question="Are the responses really anonymous?"
               answer="Yes — all responses are completely anonymous. Your friends never see each other&rsquo;s answers, and you never see who said what. Anonymity is what makes the results trustworthy."
             />
             <FaqItem
-              question="What if I don&rsquo;t like what I see?"
-              answer="Most people are pleasantly surprised. The biggest gaps tend to be hidden strengths — things your friends see in you that you&rsquo;ve been undervaluing. Blind spots are opportunities to grow, not reasons to feel bad."
+              question="What do most people discover?"
+              answer="Most people are pleasantly surprised. The biggest gaps tend to be hidden strengths &mdash; things your friends see in you that you&rsquo;ve been undervaluing. The blind spots are just as valuable &mdash; it&rsquo;s the kind of honest feedback most people never get."
             />
             <FaqItem
               question="Is this scientifically valid?"
-              answer="The quiz is based on the Johari Window framework and Simine Vazire&rsquo;s research on self-other knowledge asymmetries. It&rsquo;s not a clinical assessment, but the science behind it is real and well-established."
+              answer="The quiz is inspired by the Johari Window framework and research on self-other knowledge asymmetries by psychologist Simine Vazire. It&rsquo;s not a clinical assessment &mdash; it&rsquo;s a tool for self-reflection built on established ideas from personality psychology."
             />
             <FaqItem
               question="How many friends do I need?"
@@ -341,12 +341,28 @@ export default function LandingPage() {
 
 /* ─── Sub-components ─── */
 
-const accentClasses: Record<string, string> = {
-  violet: "bg-violet",
-  fuchsia: "bg-fuchsia",
-  amber: "bg-amber",
-  teal: "bg-teal",
-  rose: "bg-rose",
+const accentBgClasses: Record<string, string> = {
+  violet: "bg-violet/10",
+  fuchsia: "bg-fuchsia/10",
+  amber: "bg-amber/10",
+  teal: "bg-teal/10",
+  rose: "bg-rose/10",
+};
+
+const accentTextClasses: Record<string, string> = {
+  violet: "text-violet",
+  fuchsia: "text-fuchsia",
+  amber: "text-amber",
+  teal: "text-teal",
+  rose: "text-rose",
+};
+
+const accentBorderClasses: Record<string, string> = {
+  violet: "border-violet/20",
+  fuchsia: "border-fuchsia/20",
+  amber: "border-amber/20",
+  teal: "border-teal/20",
+  rose: "border-rose/20",
 };
 
 function StepCard({
@@ -361,13 +377,12 @@ function StepCard({
   accentColor: string;
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card p-6 text-center shadow-md transition-all hover:-translate-y-1 hover:shadow-lg">
-      <div className={`absolute top-0 left-0 h-1 w-full ${accentClasses[accentColor] ?? "bg-violet"}`} />
-      <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-violet/10 text-sm font-bold text-violet">
+    <div className={`group relative rounded-2xl border ${accentBorderClasses[accentColor] ?? "border-violet/20"} bg-card p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl`}>
+      <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-2xl ${accentBgClasses[accentColor] ?? "bg-violet/10"} text-xl font-bold ${accentTextClasses[accentColor] ?? "text-violet"}`}>
         {step}
       </div>
-      <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-      <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+      <h3 className="mt-5 text-xl font-bold">{title}</h3>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{description}</p>
     </div>
   );
 }
@@ -384,11 +399,12 @@ function ValueCard({
   accentColor: string;
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card p-6 shadow-md transition-all hover:-translate-y-1 hover:shadow-lg">
-      <div className={`absolute top-0 left-0 h-1 w-full ${accentClasses[accentColor] ?? "bg-violet"}`} />
-      <span className="text-2xl">{icon}</span>
-      <h3 className="mt-3 text-lg font-semibold">{title}</h3>
-      <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+    <div className={`group relative rounded-2xl border ${accentBorderClasses[accentColor] ?? "border-violet/20"} bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-xl`}>
+      <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${accentBgClasses[accentColor] ?? "bg-violet/10"} text-2xl`}>
+        {icon}
+      </div>
+      <h3 className="mt-4 text-lg font-bold">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
     </div>
   );
 }
@@ -409,37 +425,58 @@ function ExampleCard({
   type: "blind-spot" | "hidden-strength";
 }) {
   const isBlindSpot = type === "blind-spot";
+  const accentBg = isBlindSpot ? "bg-rose/10" : "bg-teal/10";
+  const accentText = isBlindSpot ? "text-rose" : "text-teal";
+  const accentBorder = isBlindSpot ? "border-rose/20" : "border-teal/20";
+  const barColor = isBlindSpot ? "bg-rose" : "bg-teal";
+
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card p-6 shadow-md transition-all hover:-translate-y-1 hover:shadow-lg">
-      <div className={`absolute top-0 left-0 h-1 w-full ${isBlindSpot ? "bg-rose" : "bg-teal"}`} />
+    <div className={`group relative rounded-2xl border ${accentBorder} bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-xl`}>
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{name}</h3>
-        <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${isBlindSpot ? "bg-rose/10 text-rose" : "bg-teal/10 text-teal"}`}>
+        <div>
+          <h3 className="text-lg font-bold">{name}</h3>
+          <p className="text-sm font-medium text-muted-foreground">{trait}</p>
+        </div>
+        <span className={`rounded-full ${accentBg} ${accentText} px-3 py-1 text-xs font-semibold`}>
           {isBlindSpot ? "Blind Spot" : "Hidden Strength"}
         </span>
       </div>
-      <p className="mt-1 text-sm font-medium text-muted-foreground">{trait}</p>
-      <div className="mt-4 flex items-center gap-4">
-        <div className="flex-1 text-center">
-          <div className="text-2xl font-extrabold">{selfScore}</div>
-          <div className="text-xs text-muted-foreground">Self</div>
+      <div className="mt-5 space-y-3">
+        <div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="font-medium">Self</span>
+            <span className="font-bold">{selfScore}/5</span>
+          </div>
+          <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-foreground/30 transition-all"
+              style={{ width: `${(selfScore / 5) * 100}%` }}
+            />
+          </div>
         </div>
-        <div className="text-muted-foreground/40">vs</div>
-        <div className="flex-1 text-center">
-          <div className="text-2xl font-extrabold">{friendScore}</div>
-          <div className="text-xs text-muted-foreground">Friends</div>
+        <div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="font-medium">Friends</span>
+            <span className={`font-bold ${accentText}`}>{friendScore}/5</span>
+          </div>
+          <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className={`h-full rounded-full ${barColor} transition-all`}
+              style={{ width: `${(friendScore / 5) * 100}%` }}
+            />
+          </div>
         </div>
       </div>
-      <p className="mt-4 text-sm text-muted-foreground">{insight}</p>
+      <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{insight}</p>
     </div>
   );
 }
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
-    <div>
-      <h3 className="text-base font-semibold">{question}</h3>
-      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{answer}</p>
+    <div className="rounded-2xl border border-border/50 bg-card p-6">
+      <h3 className="text-base font-bold">{question}</h3>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{answer}</p>
     </div>
   );
 }

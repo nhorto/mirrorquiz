@@ -21,13 +21,23 @@ async function getQuiz(slug: string) {
       title: schema.quizzes.title,
       responseCount: schema.quizzes.responseCount,
       creatorName: schema.users.name,
+      creatorEmail: schema.users.email,
     })
     .from(schema.quizzes)
     .innerJoin(schema.users, eq(schema.quizzes.userId, schema.users.id))
     .where(eq(schema.quizzes.slug, slug))
     .limit(1);
 
-  return results[0] ?? null;
+  if (results.length === 0) return null;
+
+  const row = results[0]!;
+  return {
+    ...row,
+    creatorName:
+      row.creatorName && row.creatorName.trim()
+        ? row.creatorName
+        : row.creatorEmail?.split("@")[0] ?? "Someone",
+  };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -119,6 +119,9 @@ export default async function ResultsPage({ params }: Props) {
             spots, and hidden strengths.
           </p>
           <CheckoutButton quizId={quizId} />
+          <p className="mt-3 text-xs text-muted-foreground">
+            One-time payment of $7.99. All sales are final.
+          </p>
         </div>
       )}
 
