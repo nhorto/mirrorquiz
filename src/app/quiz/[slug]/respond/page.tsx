@@ -148,7 +148,7 @@ export default function RespondPage() {
             key={q.id}
             index={i}
             category={q.category}
-            text={q.textFriend}
+            text={q.textFriend.replace(/\[Name\]/g, name)}
             value={responses[q.id] ?? null}
             onChange={(score) =>
               setResponses((prev) => ({ ...prev, [q.id]: score }))
@@ -173,6 +173,17 @@ export default function RespondPage() {
           {submitting ? "Submitting..." : "Submit Answers"}
         </Button>
       </div>
+      <p className="mt-4 text-center text-xs text-muted-foreground">
+        By submitting, you agree to our{" "}
+        <Link href="/terms" className="underline underline-offset-4 hover:text-foreground">
+          Terms
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="underline underline-offset-4 hover:text-foreground">
+          Privacy Policy
+        </Link>
+        . Your responses are anonymous.
+      </p>
     </div>
   );
 }
