@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuestionCard } from "@/components/question-card";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, fbqTrack } from "@/lib/analytics";
 import Link from "next/link";
 
 interface Question {
@@ -45,6 +45,7 @@ export default function RespondPage() {
         } else {
           setQuizInfo(quizData);
           setQuestions(questionsData.questions);
+          fbqTrack("ViewContent", { content_name: "Quiz Start" });
         }
         setLoading(false);
       })
@@ -56,6 +57,7 @@ export default function RespondPage() {
 
   const answeredCount = Object.keys(responses).length;
   const allAnswered = answeredCount === 12;
+  const progressPercent = (answeredCount / 12) * 100;
 
   async function handleSubmit() {
     if (!allAnswered || !quizInfo) return;
@@ -83,13 +85,17 @@ export default function RespondPage() {
     }
 
     trackEvent("response_submitted", { slug });
+    fbqTrack("CompleteRegistration");
     router.push(`/quiz/${slug}/thanks`);
   }
 
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Loading quiz...</p>
+        <div className="text-center">
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-violet border-t-transparent" />
+          <p className="mt-3 text-muted-foreground">Loading quiz...</p>
+        </div>
       </div>
     );
   }
@@ -100,7 +106,7 @@ export default function RespondPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold">Quiz not found</h1>
           <p className="mt-2 text-muted-foreground">{error}</p>
-          <Link href="/" className="mt-4 inline-block text-primary hover:underline">
+          <Link href="/" className="mt-4 inline-block text-violet font-medium hover:underline">
             Go home
           </Link>
         </div>
@@ -112,13 +118,26 @@ export default function RespondPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-10">
-      <div className="mb-8">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Mirror<span className="text-primary">Quiz</span>
-        </Link>
-        <h1 className="mt-6 text-3xl font-bold">
+      {/* Progress bar */}
+      <div className="sticky top-0 z-40 -mx-6 bg-background/80 backdrop-blur-md px-6 pb-4 pt-3">
+        <div className="flex items-center justify-between text-sm">
+          <Link href="/" className="text-lg font-bold tracking-tight">
+            Mirror<span className="gradient-brand-text">Quiz</span>
+          </Link>
+          <span className="font-medium text-muted-foreground">{answeredCount}/12</span>
+        </div>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
+          <div
+            className="h-full rounded-full gradient-brand transition-all duration-300"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <h1 className="text-3xl font-extrabold tracking-tight">
           How well do you know{" "}
-          <span className="text-primary">{name}</span>?
+          <span className="gradient-brand-text">{name}</span>?
         </h1>
         <p className="mt-2 text-muted-foreground">
           Rate how much each statement describes {name}. Be honest — your
@@ -127,16 +146,16 @@ export default function RespondPage() {
       </div>
 
       {/* Optional display name */}
-      <div className="mb-8 space-y-2">
-        <Label htmlFor="displayName">Your name (optional)</Label>
+      <div className="mt-6 mb-8 rounded-2xl border border-border bg-card p-5">
+        <Label htmlFor="displayName" className="font-semibold">Your name (optional)</Label>
         <Input
           id="displayName"
           placeholder="e.g., Alex"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          className="max-w-xs"
+          className="mt-2 max-w-xs"
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="mt-1.5 text-xs text-muted-foreground">
           Only shown to the quiz creator, never publicly.
         </p>
       </div>
@@ -163,12 +182,13 @@ export default function RespondPage() {
 
       <div className="mt-8 flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          {answeredCount}/12 answered
+          {allAnswered ? "All done!" : `${12 - answeredCount} more to go`}
         </p>
         <Button
           onClick={handleSubmit}
           disabled={!allAnswered || submitting}
           size="lg"
+          className={allAnswered ? "gradient-brand text-white border-0" : ""}
         >
           {submitting ? "Submitting..." : "Submit Answers"}
         </Button>

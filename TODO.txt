@@ -1,0 +1,21 @@
+ here are the things taht need to change: 
+ 1. the UI on everything but the home page needs to change - like everything is bland and it needs to be styled. and it should match the color of the home page
+ 2. also id like the report to be a little more endepth. right now a user is paying 8 dollars and TBH there isnt much in the report so we need to expand on this 
+    i think. but im really not sure what to do with this or how to expand on this. i need your help with this for sure. i think i would like it to be grounded 
+    in the research but still fun and casul like the overall vibe of the app. and for this i am talking about the trait by trait breakdown, the blind spots, hidden
+    strenghts and whatever else. it is also hard to read them like the hidden strenght- Confiendce and whatever else like the color on this and the blind spots 
+    dont really go well together. see the images. 
+3. so when someone puts in their email for them to take the quiz then they send links out to people, does this like create a account for them? like i havent put 
+    in a password or anything. so what about if i wanted to come back to this later would i be able to get to the dashboard? im not sure how this works. and lets
+    say that someones buys it after 3 people have taken it and they buy it, the scores will update when people contineu to answer? so it will constantly be updated?
+    how will they know if everyone has answered? 
+4. also there is no name on the bashboard. see the images.
+5. the chart in the results is good but i feel like its a little bland but im not really sure what to do wiht it. any ideas? 
+6.  on the report i feel like there needs to be some writting like a paragraph or something talking about the results. again grounded in research but still fun.
+    any ideas for this? good idea? bad idea?
+7. when they havent bought the results yet and we show them the chart are we showing them too much? should we show like blurred out results or soemthing like that?
+    we need to talk this through
+8. on the dashboard i also need to be able to share this on instagram as well. so create a button for that. 
+9. and there is a sign in button but the user never really signed in right? so what is this for?
+
+im not sure what else but im sure i am missing somethings

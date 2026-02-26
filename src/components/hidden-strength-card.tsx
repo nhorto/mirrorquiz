@@ -1,40 +1,49 @@
 import type { HiddenStrength } from "@/lib/insights";
-
-function formatCategory(cat: string): string {
-  return cat
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-}
+import { getHiddenStrengthDetail, formatCategory } from "@/lib/insights";
 
 interface HiddenStrengthCardProps {
   insight: HiddenStrength;
 }
 
 export function HiddenStrengthCard({ insight }: HiddenStrengthCardProps) {
+  const detail = getHiddenStrengthDetail(insight);
+
   return (
-    <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 dark:border-emerald-800 dark:bg-emerald-950/30">
+    <div className="rounded-2xl border border-teal/20 bg-teal/5 p-5">
       <div className="flex items-center gap-2">
-        <span className="text-lg">💎</span>
-        <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10">
+          <span className="text-base">💎</span>
+        </div>
+        <span className="text-xs font-semibold text-teal uppercase tracking-wider">
           Hidden Strength &middot; {formatCategory(insight.category)}
         </span>
       </div>
-      <p className="mt-2 font-medium">&ldquo;{insight.textSelf}&rdquo;</p>
+      <p className="mt-3 text-base font-semibold">&ldquo;{insight.textSelf}&rdquo;</p>
       <div className="mt-3 flex gap-4 text-sm">
-        <div>
-          <span className="text-muted-foreground">You rated: </span>
-          <span className="font-semibold">{insight.selfScore}/5</span>
+        <div className="flex items-center gap-1.5">
+          <div className="h-2.5 w-2.5 rounded-full bg-violet" />
+          <span className="text-muted-foreground">You: </span>
+          <span className="font-bold">{insight.selfScore}/5</span>
         </div>
-        <div>
-          <span className="text-muted-foreground">Friends avg: </span>
-          <span className="font-semibold">{insight.friendsAvg.toFixed(1)}/5</span>
+        <div className="flex items-center gap-1.5">
+          <div className="h-2.5 w-2.5 rounded-full bg-fuchsia" />
+          <span className="text-muted-foreground">Friends: </span>
+          <span className="font-bold">{insight.friendsAvg.toFixed(1)}/5</span>
         </div>
       </div>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Your friends see this quality in you more than you recognize it yourself.
-        Own it — this is a genuine strength!
+
+      <p className="mt-4 text-sm text-foreground/80 leading-relaxed">
+        {detail.explanation}
       </p>
+
+      <div className="mt-3 rounded-xl bg-background/50 p-3">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+          Reflect
+        </p>
+        <p className="text-sm text-muted-foreground italic">
+          {detail.reflection}
+        </p>
+      </div>
     </div>
   );
 }

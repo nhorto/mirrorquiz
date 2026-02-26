@@ -17,15 +17,10 @@ async function hashIp(ip: string, ua: string): Promise<string> {
 }
 
 export async function POST(request: Request) {
-  // Rate limit friend responses (10 per hour per IP) — fail-secure
+  // Rate limit friend responses (10 per hour per IP) — fail-secure in prod, skip in dev
   const { env: rlEnv } = await getCloudflareContext({ async: true });
-  if (!isRateLimitConfigured(rlEnv)) {
-    return NextResponse.json(
-      { error: "Service temporarily unavailable" },
-      { status: 503 }
-    );
-  }
-  {
+  const isProduction = rlEnv.ENVIRONMENT === "production";
+  if (isRateLimitConfigured(rlEnv)) {
     const ip =
       request.headers.get("cf-connecting-ip") ??
       request.headers.get("x-forwarded-for") ??
@@ -42,6 +37,11 @@ export async function POST(request: Request) {
         { status: 429 }
       );
     }
+  } else if (isProduction) {
+    return NextResponse.json(
+      { error: "Service temporarily unavailable" },
+      { status: 503 }
+    );
   }
 
   const body = await request.json();
@@ -86,10 +86,13 @@ export async function POST(request: Request) {
     request.headers.get("x-forwarded-for") ??
     "unknown";
   const ua = request.headers.get("user-agent") ?? "unknown";
-  const ipUaHash = await hashIp(ip, ua);
+  const rawHash = await hashIp(ip, ua);
 
   const { env } = await getCloudflareContext({ async: true });
   const db = drizzle(env.DB, { schema });
+
+  // In dev, randomize the IP hash so multiple submissions work from one machine
+  const ipUaHash = env.ENVIRONMENT === "production" ? rawHash : `${rawHash}-${nanoid(8)}`;
 
   // Verify quiz exists
   const quizResults = await db
@@ -121,22 +124,25 @@ export async function POST(request: Request) {
     );
   }
 
-  const existingByIp = await db
-    .select({ id: schema.respondents.id })
-    .from(schema.respondents)
-    .where(
-      and(
-        eq(schema.respondents.quizId, quizId),
-        eq(schema.respondents.ipHash, ipUaHash)
+  // In dev, skip IP hash check so you can submit multiple responses from one machine
+  if (isProduction) {
+    const existingByIp = await db
+      .select({ id: schema.respondents.id })
+      .from(schema.respondents)
+      .where(
+        and(
+          eq(schema.respondents.quizId, quizId),
+          eq(schema.respondents.ipHash, ipUaHash)
+        )
       )
-    )
-    .limit(1);
+      .limit(1);
 
-  if (existingByIp.length > 0) {
-    return NextResponse.json(
-      { error: "A response from this device has already been submitted" },
-      { status: 409 }
-    );
+    if (existingByIp.length > 0) {
+      return NextResponse.json(
+        { error: "A response from this device has already been submitted" },
+        { status: 409 }
+      );
+    }
   }
 
   // Insert respondent

@@ -13,7 +13,7 @@ async function createAuth() {
 
   return betterAuth({
     secret: env.BETTER_AUTH_SECRET,
-    baseURL: env.APP_URL ?? "http://localhost:3000",
+    baseURL: env.APP_URL ?? "http://localhost:8787",
     database: drizzleAdapter(db, {
       provider: "sqlite",
       usePlural: true,
@@ -55,7 +55,10 @@ async function createAuth() {
       updateAge: 60 * 60 * 24, // refresh daily
     },
     trustedOrigins: [
-      process.env.APP_URL ?? "http://localhost:3000",
+      env.APP_URL ?? "http://localhost:8787",
+      "http://localhost:3000",
+      "http://localhost:8787",
+      "https://www.mirrorquiz.com",
     ],
   });
 }

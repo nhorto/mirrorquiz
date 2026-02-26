@@ -66,6 +66,25 @@ export async function GET(request: Request) {
     );
   }
 
+  const appUrl = env.APP_URL ?? "http://localhost:8787";
+  const isProduction = env.ENVIRONMENT === "production";
+
+  // In dev: skip Stripe entirely, mark purchase as completed immediately
+  if (!isProduction) {
+    const purchaseId = nanoid(21);
+    await db.insert(schema.purchases).values({
+      id: purchaseId,
+      userId: session.user.id,
+      quizId,
+      amountCents: REPORT_PRICE_CENTS,
+      status: "completed",
+    });
+    return NextResponse.redirect(
+      new URL(`/purchase/success?quizId=${quizId}`, request.url),
+      303
+    );
+  }
+
   const stripeKey = env.STRIPE_SECRET_KEY;
   if (!stripeKey) {
     return NextResponse.json(
@@ -75,7 +94,6 @@ export async function GET(request: Request) {
   }
 
   const stripe = getStripe(stripeKey);
-  const appUrl = env.APP_URL ?? "http://localhost:3000";
 
   // Create a pending purchase record
   const purchaseId = nanoid(21);
