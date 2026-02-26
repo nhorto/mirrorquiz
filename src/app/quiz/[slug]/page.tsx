@@ -73,15 +73,22 @@ export default async function QuizLandingPage({ params }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6">
-      <div className="w-full max-w-md text-center">
+      {/* Decorative blobs */}
+      <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-violet/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia/20 blur-3xl" />
+
+      <div className="relative w-full max-w-md text-center">
         <Link href="/" className="text-xl font-bold tracking-tight">
-          Mirror<span className="text-primary">Quiz</span>
+          Mirror<span className="gradient-brand-text">Quiz</span>
         </Link>
 
         <div className="mt-8">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <div className="mb-4 inline-block rounded-full bg-violet/10 px-4 py-1.5 text-sm font-medium text-violet">
+            You&rsquo;ve been invited
+          </div>
+          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
             How well do you know{" "}
-            <span className="text-primary">{name}</span>?
+            <span className="gradient-brand-text">{name}</span>?
           </h1>
           <p className="mt-4 text-muted-foreground">
             Answer 12 quick questions about how you perceive {name}. It takes
@@ -92,13 +99,34 @@ export default async function QuizLandingPage({ params }: Props) {
 
         <Link
           href={`/quiz/${slug}/respond`}
-          className="mt-8 inline-block rounded-lg bg-primary px-8 py-3 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          className="gradient-brand mt-8 inline-block rounded-full px-10 py-4 text-lg font-semibold text-white shadow-lg transition-transform hover:scale-105"
         >
           Start Quiz
         </Link>
 
-        <p className="mt-6 text-xs text-muted-foreground">
-          No account needed. Your answers are anonymous.
+        <div className="mt-8 flex items-center justify-center gap-6 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1.5">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            2 minutes
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+            Anonymous
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+            </svg>
+            No account needed
+          </div>
+        </div>
+
+        <p className="mt-6 text-xs text-muted-foreground max-w-xs mx-auto">
+          MirrorQuiz helps people discover how others really see them. Your honest answers make a difference.
         </p>
       </div>
     </div>

@@ -36,10 +36,14 @@ export default function LoginPage() {
 
   if (sent) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-6">
-        <div className="w-full max-w-sm text-center">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-            <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div className="flex min-h-screen flex-col items-center justify-center px-6">
+        {/* Decorative blobs */}
+        <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-violet/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia/20 blur-3xl" />
+
+        <div className="relative w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-lg text-center">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet/10">
+            <svg className="h-8 w-8 text-violet" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
@@ -52,7 +56,7 @@ export default function LoginPage() {
             Didn&apos;t receive it?{" "}
             <button
               onClick={() => setSent(false)}
-              className="text-primary underline-offset-4 hover:underline"
+              className="text-violet font-medium underline-offset-4 hover:underline"
             >
               Try again
             </button>
@@ -63,13 +67,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6">
-      <div className="w-full max-w-sm">
+    <div className="flex min-h-screen flex-col items-center justify-center px-6">
+      {/* Decorative blobs */}
+      <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-violet/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia/20 blur-3xl" />
+
+      <div className="relative w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-lg">
         <div className="text-center">
           <Link href="/" className="text-xl font-bold tracking-tight">
-            Mirror<span className="text-primary">Quiz</span>
+            Mirror<span className="gradient-brand-text">Quiz</span>
           </Link>
-          <h1 className="mt-6 text-2xl font-bold">Sign in</h1>
+          <h1 className="mt-6 text-2xl font-bold">Welcome back</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Enter your email and we&apos;ll send you a sign-in link.
           </p>
@@ -93,7 +101,7 @@ export default function LoginPage() {
             <p className="text-sm text-destructive">{error}</p>
           )}
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full gradient-brand text-white border-0" disabled={loading}>
             {loading ? "Sending..." : "Continue with Email"}
           </Button>
         </form>

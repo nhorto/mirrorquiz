@@ -39,6 +39,7 @@ export default function CreateQuizPage() {
 
   const answeredCount = Object.keys(responses).length;
   const allAnswered = answeredCount === 12;
+  const progressPercent = (answeredCount / 12) * 100;
 
   async function handleSubmit() {
     if (!allAnswered) return;
@@ -71,29 +72,47 @@ export default function CreateQuizPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Loading questions...</p>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-violet border-t-transparent" />
+          <p className="mt-3 text-muted-foreground">Loading questions...</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-10">
-      <div className="mb-8">
-        <Link
-          href="/dashboard"
-          className="text-sm text-muted-foreground hover:text-foreground"
-        >
-          &larr; Dashboard
-        </Link>
-        <h1 className="mt-4 text-3xl font-bold">Create Your Quiz</h1>
+      {/* Progress bar */}
+      <div className="sticky top-[57px] z-40 -mx-6 bg-background/80 backdrop-blur-md px-6 pb-4 pt-2">
+        <div className="flex items-center justify-between text-sm">
+          <Link
+            href="/dashboard"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            &larr; Dashboard
+          </Link>
+          <span className="font-medium text-muted-foreground">{answeredCount}/12</span>
+        </div>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
+          <div
+            className="h-full rounded-full gradient-brand transition-all duration-300"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <h1 className="text-3xl font-extrabold tracking-tight">
+          Rate <span className="gradient-brand-text">yourself</span>
+        </h1>
         <p className="mt-2 text-muted-foreground">
-          Rate how much each statement describes you. Be honest — the magic
-          happens when your answers differ from your friends&apos;.
+          Be honest — the magic happens when your answers differ from your
+          friends&apos;.
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="mt-8 space-y-6">
         {questions.map((q, i) => (
           <QuestionCard
             key={q.id}
@@ -114,12 +133,13 @@ export default function CreateQuizPage() {
 
       <div className="mt-8 flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          {answeredCount}/12 answered
+          {allAnswered ? "All done! Create your quiz." : `${12 - answeredCount} more to go`}
         </p>
         <Button
           onClick={handleSubmit}
           disabled={!allAnswered || submitting}
           size="lg"
+          className={allAnswered ? "gradient-brand text-white border-0" : ""}
         >
           {submitting ? "Creating..." : "Create Quiz & Get Link"}
         </Button>

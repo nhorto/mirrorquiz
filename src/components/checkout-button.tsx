@@ -6,9 +6,9 @@ import { trackEvent } from "@/lib/analytics";
 export function CheckoutButton({ quizId }: { quizId: string }) {
   return (
     <Link
-      href={`/dashboard/${quizId}/report`}
+      href={`/api/stripe/checkout?quizId=${quizId}`}
       onClick={() => trackEvent("checkout_started", { quizId })}
-      className="mt-4 inline-block rounded-lg bg-primary px-8 py-3 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+      className="gradient-brand mt-6 inline-block rounded-full px-10 py-4 text-base font-semibold text-white shadow-lg transition-transform hover:scale-105"
     >
       Unlock Full Report — $7.99
     </Link>

@@ -18,7 +18,7 @@ export function SignOutButton() {
         })
       }
     >
-      Sign Out
+      Log Out
     </Button>
   );
 }

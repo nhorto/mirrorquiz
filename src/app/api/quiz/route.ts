@@ -12,15 +12,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Rate limit quiz creation (5 per hour per user) — fail-secure
+  // Rate limit quiz creation (5 per hour per user) — fail-secure in prod, skip in dev
   const { env: rlEnv } = await getCloudflareContext({ async: true });
-  if (!isRateLimitConfigured(rlEnv)) {
-    return NextResponse.json(
-      { error: "Service temporarily unavailable" },
-      { status: 503 }
-    );
-  }
-  {
+  const isProduction = rlEnv.ENVIRONMENT === "production";
+  if (isRateLimitConfigured(rlEnv)) {
     const result = await checkRateLimit(
       "quizCreation",
       session.user.id,
@@ -33,6 +28,11 @@ export async function POST(request: Request) {
         { status: 429 }
       );
     }
+  } else if (isProduction) {
+    return NextResponse.json(
+      { error: "Service temporarily unavailable" },
+      { status: 503 }
+    );
   }
 
   const body = await request.json();
