@@ -21,7 +21,6 @@ async function getQuiz(slug: string) {
       title: schema.quizzes.title,
       responseCount: schema.quizzes.responseCount,
       creatorName: schema.users.name,
-      creatorEmail: schema.users.email,
     })
     .from(schema.quizzes)
     .innerJoin(schema.users, eq(schema.quizzes.userId, schema.users.id))
@@ -36,7 +35,7 @@ async function getQuiz(slug: string) {
     creatorName:
       row.creatorName && row.creatorName.trim()
         ? row.creatorName
-        : row.creatorEmail?.split("@")[0] ?? "Someone",
+        : "Someone",
   };
 }
 

@@ -14,7 +14,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/dashboard";
+  const rawNext = searchParams.get("next") ?? "/dashboard";
+  // Prevent open redirect: only allow relative paths, reject protocol-relative URLs
+  const next = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/dashboard";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

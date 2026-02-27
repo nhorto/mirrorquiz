@@ -3,6 +3,14 @@ import { eq, and } from "drizzle-orm";
 import type { Database } from "@/db";
 import * as schema from "@/db/schema";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 interface NotificationContext {
   db: Database;
   resendApiKey?: string;
@@ -118,7 +126,7 @@ export async function notifyNewResponse(
   }
 
   const resend = new Resend(ctx.resendApiKey);
-  const name = quiz.creatorName ?? "there";
+  const name = escapeHtml(quiz.creatorName ?? "there");
   const resultsUrl = `${ctx.appUrl}/dashboard`;
 
   if (isResultsReady) {

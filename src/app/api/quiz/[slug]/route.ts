@@ -18,7 +18,6 @@ export async function GET(
       slug: schema.quizzes.slug,
       title: schema.quizzes.title,
       creatorName: schema.users.name,
-      creatorEmail: schema.users.email,
     })
     .from(schema.quizzes)
     .innerJoin(schema.users, eq(schema.quizzes.userId, schema.users.id))
@@ -33,7 +32,7 @@ export async function GET(
   const creatorName =
     row.creatorName && row.creatorName.trim()
       ? row.creatorName
-      : row.creatorEmail?.split("@")[0] ?? "Someone";
+      : "Someone";
 
   return NextResponse.json({
     quizId: row.quizId,

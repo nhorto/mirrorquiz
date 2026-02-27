@@ -118,7 +118,7 @@ export default async function ResultsPage({ params }: Props) {
         <MatchPercentage percentage={analysis.matchPercentage} />
       </div>
 
-      {/* Radar Chart — blurred if not purchased */}
+      {/* Radar Chart — blurred with redacted data if not purchased */}
       <div className="mt-6 rounded-2xl border border-border bg-card p-6">
         <h2 className="mb-4 text-xl font-bold">
           Self vs. Friends Perception
@@ -126,7 +126,15 @@ export default async function ResultsPage({ params }: Props) {
         {hasPurchased ? (
           <PerceptionRadarChart categories={analysis.categories} />
         ) : (
-          <PerceptionRadarChart categories={analysis.categories} blurred />
+          <PerceptionRadarChart
+            categories={analysis.categories.map((c) => ({
+              ...c,
+              selfAvg: 3,
+              friendsAvg: 3,
+              gap: 0,
+            }))}
+            blurred
+          />
         )}
       </div>
 

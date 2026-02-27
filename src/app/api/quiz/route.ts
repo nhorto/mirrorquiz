@@ -35,7 +35,12 @@ export async function POST(request: Request) {
     );
   }
 
-  const body = await request.json();
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
   const { responses, questionSetId } = body as {
     responses: Array<{ questionId: string; score: number }>;
     questionSetId: string;
@@ -57,7 +62,7 @@ export async function POST(request: Request) {
   }
 
   for (const r of responses) {
-    if (!r.questionId || typeof r.score !== "number" || r.score < 1 || r.score > 5) {
+    if (!r.questionId || typeof r.score !== "number" || !Number.isInteger(r.score) || r.score < 1 || r.score > 5) {
       return NextResponse.json(
         { error: "Invalid response: scores must be integers 1-5" },
         { status: 400 }

@@ -1,7 +1,7 @@
 import { initAuth } from "@/lib/auth";
 import { toNextJsHandler } from "better-auth/next-js";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, isRateLimitConfigured } from "@/lib/rate-limit";
 
 export async function GET(request: Request) {
   const auth = await initAuth();
@@ -10,11 +10,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  // Rate limit magic link requests (3 per 15 min per IP)
+  // Rate limit magic link requests (3 per 15 min per IP) — fail-secure in prod
   const url = new URL(request.url);
   if (url.pathname.includes("magic-link")) {
     const { env } = await getCloudflareContext({ async: true });
-    if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
+    const isProduction = env.ENVIRONMENT === "production";
+    if (isRateLimitConfigured(env)) {
       const ip =
         request.headers.get("cf-connecting-ip") ??
         request.headers.get("x-forwarded-for") ??
@@ -22,8 +23,8 @@ export async function POST(request: Request) {
       const result = await checkRateLimit(
         "magicLink",
         ip,
-        env.UPSTASH_REDIS_REST_URL,
-        env.UPSTASH_REDIS_REST_TOKEN
+        env.UPSTASH_REDIS_REST_URL!,
+        env.UPSTASH_REDIS_REST_TOKEN!
       );
       if (!result.success) {
         return new Response(
@@ -31,6 +32,11 @@ export async function POST(request: Request) {
           { status: 429, headers: { "Content-Type": "application/json" } }
         );
       }
+    } else if (isProduction) {
+      return new Response(
+        JSON.stringify({ error: "Service temporarily unavailable" }),
+        { status: 503, headers: { "Content-Type": "application/json" } }
+      );
     }
   }
 

@@ -90,7 +90,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    // Mark purchase as completed
+    // Atomically mark purchase as completed only if still pending (idempotent)
     await db
       .update(schema.purchases)
       .set({
@@ -98,7 +98,12 @@ export async function POST(request: Request) {
         completedAt: new Date().toISOString(),
         stripeSessionId: session.id,
       })
-      .where(eq(schema.purchases.id, purchaseId));
+      .where(
+        and(
+          eq(schema.purchases.id, purchaseId),
+          eq(schema.purchases.status, "pending")
+        )
+      );
   }
 
   return NextResponse.json({ received: true });

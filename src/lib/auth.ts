@@ -11,9 +11,15 @@ async function createAuth() {
   const { env } = await getCloudflareContext({ async: true });
   const db = drizzle(env.DB, { schema });
 
+  const isProduction = env.ENVIRONMENT === "production";
+
+  if (isProduction && !env.BETTER_AUTH_SECRET) {
+    throw new Error("BETTER_AUTH_SECRET is required in production");
+  }
+
   return betterAuth({
     secret: env.BETTER_AUTH_SECRET,
-    baseURL: env.APP_URL ?? "http://localhost:8787",
+    baseURL: env.APP_URL ?? (isProduction ? "https://mirrorquiz.com" : "http://localhost:8787"),
     database: drizzleAdapter(db, {
       provider: "sqlite",
       usePlural: true,
@@ -55,10 +61,12 @@ async function createAuth() {
       updateAge: 60 * 60 * 24, // refresh daily
     },
     trustedOrigins: [
-      env.APP_URL ?? "http://localhost:8787",
-      "http://localhost:3000",
-      "http://localhost:8787",
+      env.APP_URL ?? (isProduction ? "https://mirrorquiz.com" : "http://localhost:8787"),
+      "https://mirrorquiz.com",
       "https://www.mirrorquiz.com",
+      ...(isProduction
+        ? []
+        : ["http://localhost:3000", "http://localhost:8787"]),
     ],
   });
 }

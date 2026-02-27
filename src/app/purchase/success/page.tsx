@@ -1,5 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { getSession } from "@/lib/session";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { drizzle } from "drizzle-orm/d1";
+import { eq, and } from "drizzle-orm";
+import * as schema from "@/db/schema";
 import { TrackEvent } from "@/components/track-event";
 
 interface Props {
@@ -7,10 +12,30 @@ interface Props {
 }
 
 export default async function PurchaseSuccessPage({ searchParams }: Props) {
+  const session = await getSession();
+  if (!session) redirect("/login");
+
   const params = await searchParams;
   const quizId = params.quizId;
 
   if (!quizId) redirect("/dashboard");
+
+  // Verify this user actually has a completed purchase for this quiz
+  const { env } = await getCloudflareContext({ async: true });
+  const db = drizzle(env.DB, { schema });
+  const purchase = await db
+    .select({ id: schema.purchases.id })
+    .from(schema.purchases)
+    .where(
+      and(
+        eq(schema.purchases.quizId, quizId),
+        eq(schema.purchases.userId, session.user.id),
+        eq(schema.purchases.status, "completed")
+      )
+    )
+    .limit(1);
+
+  if (purchase.length === 0) redirect("/dashboard");
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6">
