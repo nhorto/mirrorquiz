@@ -49,16 +49,16 @@
 **Instagram:**
 > I was NOT ready for my results
 >
-> I took this quiz called MirrorQuiz where you rate yourself on 12 personality traits… then your friends rate you on the same things. And it shows you the difference.
+> MirrorQuiz is a free personality quiz that reveals the gap between how you see yourself and how your friends actually see you. You rate yourself on 12 personality traits — things like confidence, honesty, how emotional you are — then you send a link to your friends and they rate you on the exact same things. It puts your answers side by side and shows you where you don't match.
 >
 > Let's just say I learned some things about myself today.
 >
-> The quiz is free — link in bio
+> It's completely free — take it at mirrorquiz.com (link in bio too)
 >
-> #mirrorquiz #personalityquiz #selfdiscovery #knowyourself #bestfriendcheck #personalitytrait #friendshiptest #selfawareness #quiztime #mindblown
+> #mirrorquiz #personalityquiz #selfdiscovery #knowyourself #bestfriendcheck #personalitytrait #friendshiptest #selfawareness #quiztime #mindblown #perceptiongap #freequiz #blindspots
 
 **TikTok:**
-> I was NOT ready for my results… MirrorQuiz shows you how your friends ACTUALLY see you. Link in bio #mirrorquiz #personalityquiz #knowyourself #bestfriendcheck #selfawareness #friendshiptest #quiztime
+> I was NOT ready for my results… MirrorQuiz is a free quiz where you rate yourself on personality traits and your friends rate you on the same ones — then it shows you the gap. turns out I don't know myself as well as I thought. take it free at mirrorquiz.com #mirrorquiz #personalityquiz #knowyourself #bestfriendcheck #selfawareness #fyp
 
 ---
 
@@ -67,16 +67,16 @@
 **Instagram:**
 > Why did nobody tell me about this sooner
 >
-> MirrorQuiz lets you rate yourself on your personality traits and then your friends rate you on the exact same things. Then it shows you where you don't match.
+> MirrorQuiz is a free personality quiz that shows you how your friends really see you vs how you see yourself. You rate yourself on 12 traits, send a link to your friends, they rate you on the same things — and it reveals exactly where you don't match. Your blind spots, your hidden strengths, all of it.
 >
 > My best friend and I need to have a conversation after this.
 >
-> Free to take — link in bio
+> Completely free to take at mirrorquiz.com (link in bio)
 >
-> #mirrorquiz #personalityquiz #bestfriend #friendshipgoals #selfdiscovery #knowyourself #bestfriendcheck #personalitycheck #quiztime #girlssupportinggirls
+> #mirrorquiz #personalityquiz #bestfriend #friendshipgoals #selfdiscovery #knowyourself #bestfriendcheck #personalitycheck #quiztime #girlssupportinggirls #freequiz #perceptiongap #blindspots
 
 **TikTok:**
-> my best friend and I need to talk after this quiz MirrorQuiz shows you how your friends really see you vs how you see yourself. Link in bio #mirrorquiz #personalityquiz #bestfriend #bestfriendcheck #knowyourself #friendshiptest
+> my best friend and I need to talk after this quiz. MirrorQuiz is free — you rate yourself on personality traits, your friends rate you on the same ones, and it shows you where you disagree. I was not okay after this. mirrorquiz.com #mirrorquiz #personalityquiz #bestfriend #bestfriendcheck #fyp #freequiz
 
 ---
 
@@ -85,16 +85,16 @@
 **Instagram:**
 > Don't take this quiz if you can't handle the truth about yourself. Seriously.
 >
-> MirrorQuiz has you rate yourself on 12 personality traits. Then your friends rate you on the same ones. And it shows you exactly where you disagree.
+> MirrorQuiz is a free personality quiz where you rate yourself on 12 traits like confidence, honesty, and emotional awareness. Then your friends rate you on the exact same things. And it shows you where your self-image doesn't match how people actually experience you.
 >
 > Most people think they're self-aware. This quiz proves they're not.
 >
-> Free to take — link in bio
+> It's free to take — go to mirrorquiz.com or tap the link in bio
 >
-> #mirrorquiz #personalityquiz #truthhurts #selfdiscovery #knowyourself #selfawareness #bestfriendcheck #personalitycheck #honestfeedback #quiztime
+> #mirrorquiz #personalityquiz #truthhurts #selfdiscovery #knowyourself #selfawareness #bestfriendcheck #personalitycheck #honestfeedback #quiztime #freequiz #perceptiongap #blindspots
 
 **TikTok:**
-> don't take this quiz if you can't handle the truth MirrorQuiz shows you the gap between who you think you are and who your friends think you are. Link in bio #mirrorquiz #personalityquiz #truthhurts #selfawareness #bestfriendcheck #knowyourself
+> don't take this quiz if you can't handle the truth. MirrorQuiz is free — you rate yourself, your friends rate you on the same traits, and it shows you the gap. most people are not as self-aware as they think. mirrorquiz.com #mirrorquiz #personalityquiz #truthhurts #selfawareness #bestfriendcheck #fyp
 
 ---
 
@@ -103,16 +103,16 @@
 **Instagram:**
 > Your friends have opinions about you they'll never say out loud. This quiz will.
 >
-> MirrorQuiz puts your self-ratings next to your friends' ratings on the same personality traits. And the gaps are wild.
+> MirrorQuiz is a free personality quiz that puts your self-ratings next to your friends' ratings on the same 12 traits — and reveals the gap between how you see yourself and how they actually see you. Your blind spots, hidden strengths, everything.
 >
 > You think you're easygoing? Your friends might disagree.
 >
-> Free to take — link in bio
+> Take it free at mirrorquiz.com (link in bio)
 >
-> #mirrorquiz #personalityquiz #knowyourself #selfdiscovery #bestfriendcheck #friendshiptest #personalitycheck #selfawareness #uncomfortable #quiztime
+> #mirrorquiz #personalityquiz #knowyourself #selfdiscovery #bestfriendcheck #friendshiptest #personalitycheck #selfawareness #uncomfortable #quiztime #freequiz #perceptiongap #hiddenstrengths
 
 **TikTok:**
-> your friends have opinions about you they'll never say out loud MirrorQuiz will though. Link in bio #mirrorquiz #personalityquiz #knowyourself #bestfriendcheck #selfawareness #friendshiptest #uncomfortable
+> your friends have opinions about you they'll never say out loud. MirrorQuiz will though. it's a free quiz — you rate yourself, your friends rate you, and it shows you the difference. mirrorquiz.com #mirrorquiz #personalityquiz #knowyourself #bestfriendcheck #selfawareness #fyp
 
 ---
 
@@ -121,16 +121,16 @@
 **Instagram:**
 > This quiz kind of broke me and I mean that in the best way.
 >
-> MirrorQuiz has you answer questions about your personality. Then your friends answer the same questions about you. And it shows you exactly where you see yourself differently than everyone else does.
+> MirrorQuiz is a free personality quiz where you answer questions about yourself and your friends answer the same ones about you. Then it shows you exactly where you see yourself differently than everyone else does — your blind spots, your hidden strengths, the whole perception gap.
 >
 > I thought I knew myself. Turns out I had some blind spots.
 >
-> Free to take — link in bio
+> Completely free — take it at mirrorquiz.com (link in bio)
 >
-> #mirrorquiz #personalityquiz #selfdiscovery #knowyourself #identitycrisis #blindspots #selfawareness #bestfriendcheck #personalitycheck #quiztime
+> #mirrorquiz #personalityquiz #selfdiscovery #knowyourself #identitycrisis #blindspots #selfawareness #bestfriendcheck #personalitycheck #quiztime #freequiz #perceptiongap #hiddenstrengths
 
 **TikTok:**
-> this quiz kind of broke me MirrorQuiz shows you how you see yourself vs how everyone else sees you. I was not prepared. Link in bio #mirrorquiz #personalityquiz #selfdiscovery #knowyourself #identitycrisis #selfawareness #bestfriendcheck
+> this quiz kind of broke me. MirrorQuiz is free — you rate yourself on personality traits, your friends rate you on the same ones, and it shows you how differently they see you. I was not prepared. mirrorquiz.com #mirrorquiz #personalityquiz #selfdiscovery #identitycrisis #selfawareness #fyp
 
 ---
 
