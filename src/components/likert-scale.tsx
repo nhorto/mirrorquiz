@@ -26,13 +26,15 @@ export function LikertScale({ value, onChange, disabled }: LikertScaleProps) {
           disabled={disabled}
           onClick={() => onChange(score)}
           className={cn(
-            "flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all",
+            "flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all duration-150 active:scale-95",
             value === score
-              ? "border-primary bg-primary text-primary-foreground scale-110"
-              : "border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground",
+              ? "gradient-brand animate-pop border-transparent text-white shadow-md shadow-violet/30"
+              : "border-border bg-card text-muted-foreground hover:-translate-y-0.5 hover:border-violet/50 hover:text-foreground hover:shadow-sm",
             disabled && "cursor-not-allowed opacity-50"
           )}
           title={labels[score - 1]}
+          aria-label={labels[score - 1]}
+          aria-pressed={value === score}
         >
           {score}
         </button>

@@ -100,20 +100,30 @@ export default async function ReportPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
+      {/* Decorative blobs — homepage identity */}
+      <div className="pointer-events-none fixed -top-24 -right-24 -z-10 h-96 w-96 rounded-full bg-violet/10 blur-3xl" />
+      <div className="pointer-events-none fixed -bottom-24 -left-24 -z-10 h-96 w-96 rounded-full bg-fuchsia/10 blur-3xl" />
+
       <Link
         href={`/dashboard/${quizId}/results`}
-        className="text-sm text-muted-foreground hover:text-foreground"
+        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         &larr; Back to Results
       </Link>
 
-      <h1 className="mt-6 text-3xl font-extrabold tracking-tight">
-        Your Full <span className="gradient-brand-text">Report</span>
-      </h1>
-      <p className="mt-2 text-muted-foreground">
-        Based on {analysis.responseCount} response
-        {analysis.responseCount !== 1 ? "s" : ""}
-      </p>
+      {/* Premium document header */}
+      <div className="animate-fade-in-up mt-6 border-b-2 border-violet/20 pb-6">
+        <div className="inline-block rounded-full bg-violet/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-violet">
+          Premium Report
+        </div>
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+          Your Full <span className="gradient-brand-text">Report</span>
+        </h1>
+        <p className="mt-2 text-muted-foreground">
+          Built from {analysis.responseCount} anonymous response
+          {analysis.responseCount !== 1 ? "s" : ""} — the honest picture.
+        </p>
+      </div>
 
       {/* Paid content */}
       {!hasPurchased ? (
@@ -163,23 +173,35 @@ export default async function ReportPage({ params }: Props) {
             </div>
           ) : null}
 
-          {/* Match Percentage + Radar */}
-          <div className="rounded-2xl border border-border bg-card p-8 flex justify-center">
-            <MatchPercentage percentage={analysis.matchPercentage} />
-          </div>
-
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="mb-4 text-xl font-bold">
-              Self vs. Friends Perception
-            </h2>
-            <PerceptionRadarChart categories={analysis.categories} />
+          {/* Match Percentage + Radar — centerpiece treatment */}
+          <div className="overflow-hidden rounded-3xl border-2 border-violet/20 bg-card shadow-xl shadow-violet/5">
+            <div className="gradient-brand h-1.5 w-full" />
+            <div className="p-3 py-6 sm:p-8">
+              <div className="text-center">
+                <h2 className="text-xl font-bold sm:text-2xl">
+                  Self vs. <span className="gradient-brand-text">Friends</span> Perception
+                </h2>
+              </div>
+              <PerceptionRadarChart categories={analysis.categories} />
+              <div className="mt-2 flex justify-center border-t border-border/60 pt-6">
+                <MatchPercentage percentage={analysis.matchPercentage} />
+              </div>
+            </div>
           </div>
 
           {/* Category Breakdown */}
           <section>
-            <h2 className="mb-4 text-xl font-bold">
-              Trait-by-Trait Breakdown
-            </h2>
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet/10">
+                <span className="text-xl">📊</span>
+              </div>
+              <div>
+                <h2 className="text-xl font-bold">Trait-by-Trait Breakdown</h2>
+                <p className="text-sm text-muted-foreground">
+                  All 12 traits, your rating vs. theirs.
+                </p>
+              </div>
+            </div>
             <CategoryBreakdown categories={analysis.categories} />
           </section>
 
