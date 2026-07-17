@@ -77,9 +77,9 @@ export default function LoginPage() {
           <Link href="/" className="text-xl font-bold tracking-tight">
             Mirror<span className="gradient-brand-text">Quiz</span>
           </Link>
-          <h1 className="mt-6 text-2xl font-bold">Welcome back</h1>
+          <h1 className="mt-6 text-2xl font-bold">Sign in to your quiz</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Enter your email and we&apos;ll send you a sign-in link.
+            Enter the email you used and we&apos;ll send you a sign-in link.
           </p>
         </div>
 
@@ -108,6 +108,13 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           No password needed. We&apos;ll email you a secure sign-in link.
+        </p>
+        <p className="mt-4 text-center text-sm text-muted-foreground">
+          New here?{" "}
+          <Link href="/start" className="text-violet font-medium underline-offset-4 hover:underline">
+            Take the quiz first
+          </Link>{" "}
+          — no account needed.
         </p>
         <p className="mt-3 text-center text-xs text-muted-foreground">
           By signing in, you agree to our{" "}

@@ -11,6 +11,7 @@ export const users = sqliteTable("users", {
   email: text("email").notNull().unique(),
   emailVerified: integer("email_verified", { mode: "boolean" }).notNull(),
   image: text("image"),
+  isAnonymous: integer("is_anonymous", { mode: "boolean" }),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
 });
@@ -188,6 +189,26 @@ export const purchases = sqliteTable("purchases", {
     .default(sql`(datetime('now'))`),
   completedAt: text("completed_at"),
 });
+
+// ─── Quiz Claims (deferred signup) ───────────────────────────────────
+// Maps an email address to the anonymous user who took the quiz before
+// signing up. When a session is created for a user with that email, the
+// anonymous user's quizzes are migrated over and the anonymous user is
+// deleted. Works across browsers (in-app browser → real browser).
+export const quizClaims = sqliteTable(
+  "quiz_claims",
+  {
+    id: text("id").primaryKey(),
+    email: text("email").notNull(),
+    anonymousUserId: text("anonymous_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(datetime('now'))`),
+  },
+  (table) => [uniqueIndex("quiz_claims_anon_user").on(table.anonymousUserId)]
+);
 
 // ─── Email Notifications ─────────────────────────────────────────────
 export const emailNotifications = sqliteTable("email_notifications", {

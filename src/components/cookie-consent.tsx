@@ -1,28 +1,39 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 const CONSENT_KEY = "pq_cookie_consent";
+const CONSENT_EVENT = "pq-consent-change";
+
+function subscribe(callback: () => void) {
+  window.addEventListener(CONSENT_EVENT, callback);
+  window.addEventListener("storage", callback);
+  return () => {
+    window.removeEventListener(CONSENT_EVENT, callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
+// null = not yet decided
+function getSnapshot(): boolean | null {
+  const stored = localStorage.getItem(CONSENT_KEY);
+  if (stored === "granted") return true;
+  if (stored === "denied") return false;
+  return null;
+}
 
 export function useCookieConsent() {
-  const [consent, setConsent] = useState<boolean | null>(null);
+  const consent = useSyncExternalStore(subscribe, getSnapshot, () => null);
 
-  useEffect(() => {
-    const stored = localStorage.getItem(CONSENT_KEY);
-    if (stored === "granted") setConsent(true);
-    else if (stored === "denied") setConsent(false);
-    // null = not yet decided
+  const grant = useCallback(() => {
+    localStorage.setItem(CONSENT_KEY, "granted");
+    window.dispatchEvent(new Event(CONSENT_EVENT));
   }, []);
 
-  function grant() {
-    localStorage.setItem(CONSENT_KEY, "granted");
-    setConsent(true);
-  }
-
-  function deny() {
+  const deny = useCallback(() => {
     localStorage.setItem(CONSENT_KEY, "denied");
-    setConsent(false);
-  }
+    window.dispatchEvent(new Event(CONSENT_EVENT));
+  }, []);
 
   return { consent, grant, deny };
 }
