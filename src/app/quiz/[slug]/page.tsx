@@ -82,7 +82,10 @@ export default async function QuizLandingPage({ params }: Props) {
           Mirror<span className="gradient-brand-text">Quiz</span>
         </Link>
 
-        <div className="mt-8">
+        <div className="animate-fade-in-up mt-8">
+          <div className="gradient-brand mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full text-3xl font-extrabold text-white shadow-lg shadow-violet/25">
+            {name.charAt(0).toUpperCase()}
+          </div>
           <div className="mb-4 inline-block rounded-full bg-violet/10 px-4 py-1.5 text-sm font-medium text-violet">
             You&rsquo;ve been invited
           </div>

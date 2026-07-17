@@ -102,8 +102,11 @@ export default function CreateQuizPage() {
         </div>
       </div>
 
-      <div className="mt-4">
-        <h1 className="text-3xl font-extrabold tracking-tight">
+      <div className="animate-fade-in-up mt-4">
+        <div className="inline-block rounded-full bg-violet/10 px-3 py-1 text-xs font-semibold text-violet">
+          Step 1 of 2 · Rate yourself
+        </div>
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight">
           Rate <span className="gradient-brand-text">yourself</span>
         </h1>
         <p className="mt-2 text-muted-foreground">

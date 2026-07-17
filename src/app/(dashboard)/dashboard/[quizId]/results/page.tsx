@@ -98,37 +98,49 @@ export default async function ResultsPage({ params }: Props) {
         properties={{ quizId, responseCount: analysis.responseCount, hasPurchased }}
         fbq={!hasPurchased ? { event: "AddToCart", params: { value: 7.99, currency: "USD" } } : undefined}
       />
+      {/* Decorative blobs — homepage identity */}
+      <div className="pointer-events-none fixed -top-24 -right-24 -z-10 h-96 w-96 rounded-full bg-violet/10 blur-3xl" />
+      <div className="pointer-events-none fixed -bottom-24 -left-24 -z-10 h-96 w-96 rounded-full bg-fuchsia/10 blur-3xl" />
+
       <Link
         href="/dashboard"
-        className="text-sm text-muted-foreground hover:text-foreground"
+        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         &larr; Dashboard
       </Link>
 
-      <h1 className="mt-6 text-3xl font-extrabold tracking-tight">
-        Your <span className="gradient-brand-text">Results</span>
-      </h1>
-      <p className="mt-2 text-muted-foreground">
-        Based on {analysis.responseCount} response
-        {analysis.responseCount !== 1 ? "s" : ""}
-      </p>
-
-      {/* Match Percentage */}
-      <div className="mt-8 rounded-2xl border border-border bg-card p-8 flex justify-center">
-        <MatchPercentage percentage={analysis.matchPercentage} />
+      <div className="animate-fade-in-up mt-6 text-center sm:text-left">
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+          Your <span className="gradient-brand-text">Results</span>
+        </h1>
+        <p className="mt-2 text-muted-foreground">
+          How {analysis.responseCount} friend{analysis.responseCount !== 1 ? "s" : ""} see you,
+          side by side with how you see yourself.
+        </p>
       </div>
 
-      {/* Radar Chart — free for everyone, as promised on the pricing table */}
-      <div className="mt-6 rounded-2xl border border-border bg-card p-6">
-        <h2 className="mb-4 text-xl font-bold">
-          Self vs. Friends Perception
-        </h2>
-        <PerceptionRadarChart categories={analysis.categories} />
+      {/* Centerpiece: radar chart + match ring */}
+      <div className="animate-fade-in-up stagger-1 mt-8 overflow-hidden rounded-3xl border-2 border-violet/20 bg-card shadow-xl shadow-violet/5">
+        <div className="gradient-brand h-1.5 w-full" />
+        <div className="p-3 py-6 sm:p-8">
+          <div className="text-center">
+            <h2 className="text-xl font-bold sm:text-2xl">
+              Self vs. <span className="gradient-brand-text">Friends</span> Perception
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Where the shapes diverge is where the interesting stuff lives.
+            </p>
+          </div>
+          <PerceptionRadarChart categories={analysis.categories} />
+          <div className="mt-2 flex justify-center border-t border-border/60 pt-6">
+            <MatchPercentage percentage={analysis.matchPercentage} />
+          </div>
+        </div>
       </div>
 
       {/* Paywall CTA */}
       {!hasPurchased && (
-        <div className="mt-8 relative overflow-hidden rounded-2xl border-2 border-violet/30 p-8 text-center gradient-glow">
+        <div className="animate-fade-in-up stagger-2 mt-8 relative overflow-hidden rounded-2xl border-2 border-violet/30 p-8 text-center gradient-glow">
           <div className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-violet/20 blur-2xl" />
           <div className="pointer-events-none absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-fuchsia/20 blur-2xl" />
 

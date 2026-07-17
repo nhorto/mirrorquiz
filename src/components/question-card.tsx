@@ -33,11 +33,29 @@ export function QuestionCard({
   value,
   onChange,
 }: QuestionCardProps) {
+  const answered = value !== null;
+
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
+    <div
+      className={`animate-fade-in-up rounded-2xl border bg-card p-6 transition-all duration-300 ${
+        answered
+          ? "border-violet/30 shadow-sm"
+          : "border-border hover:border-violet/20 hover:shadow-md"
+      }`}
+    >
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-muted-foreground">
-          {index + 1}/12
+        <span
+          className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold transition-colors duration-300 ${
+            answered ? "gradient-brand text-white" : "bg-muted text-muted-foreground"
+          }`}
+        >
+          {answered ? (
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            index + 1
+          )}
         </span>
         <span
           className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -47,7 +65,7 @@ export function QuestionCard({
           {formatCategory(category)}
         </span>
       </div>
-      <p className="mt-3 text-lg font-medium">{text}</p>
+      <p className="mt-3 text-lg font-medium leading-snug">{text}</p>
       <div className="mt-5 space-y-2">
         <LikertScale value={value} onChange={onChange} />
         <LikertLabels />
