@@ -1,8 +1,16 @@
-import Link from "next/link";
+import { TrackEvent } from "@/components/track-event";
+import { CreateYourOwnCta } from "@/components/create-your-own-cta";
 
-export default function ThanksPage() {
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function ThanksPage({ params }: Props) {
+  const { slug } = await params;
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6">
+      <TrackEvent event="respondent_thanks_viewed" properties={{ slug }} />
       {/* Decorative blobs */}
       <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-500/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-violet/20 blur-3xl" />
@@ -31,11 +39,24 @@ export default function ThanksPage() {
           notified.
         </p>
 
-        {/* Divider */}
-        <div className="my-8 h-px bg-border" />
+        {/* CTA — the highest-intent moment in the whole funnel */}
+        <div className="mt-10 space-y-5 rounded-2xl border-2 border-violet/30 bg-card p-8 gradient-glow">
+          <p className="text-2xl font-extrabold leading-tight">
+            Now it&apos;s <span className="gradient-brand-text">your</span> turn.
+          </p>
+          <p className="text-base text-muted-foreground">
+            You just told a friend how you see them. Want to know how{" "}
+            <em>your</em> friends really see you? Take the same 2-minute quiz
+            and send them your link.
+          </p>
+          <CreateYourOwnCta slug={slug} />
+          <p className="text-sm text-muted-foreground">
+            Free &middot; No account needed to start
+          </p>
+        </div>
 
         {/* MirrorQuiz explanation */}
-        <div className="rounded-2xl border border-violet/20 bg-surface-violet p-6 text-left">
+        <div className="mt-8 rounded-2xl border border-violet/20 bg-surface-violet p-6 text-left">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg font-bold tracking-tight">
               Mirror<span className="gradient-brand-text">Quiz</span>
@@ -45,25 +66,6 @@ export default function ThanksPage() {
             MirrorQuiz helps you discover how others really see you — your blind spots,
             hidden strengths, and the gaps between self-perception and reality.
             Based on personality psychology research.
-          </p>
-        </div>
-
-        {/* CTA */}
-        <div className="mt-10 space-y-5">
-          <p className="text-2xl font-extrabold leading-tight">
-            Now it&apos;s <span className="gradient-brand-text">your</span> turn.
-          </p>
-          <p className="text-base text-muted-foreground">
-            Find out what your friends <em>really</em> think. Create your own quiz in 2 minutes and share it.
-          </p>
-          <Link
-            href="/"
-            className="gradient-brand mt-2 inline-block rounded-full px-12 py-4 text-lg font-bold text-white shadow-lg transition-transform hover:scale-105"
-          >
-            Create Your Own Quiz
-          </Link>
-          <p className="text-sm text-muted-foreground">
-            Free to start &middot; No credit card required
           </p>
         </div>
       </div>

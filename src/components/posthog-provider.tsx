@@ -1,15 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
-import { initPostHog } from "@/lib/analytics";
+import { initPostHog, setAnalyticsConsent } from "@/lib/analytics";
 import { CookieConsent, useCookieConsent } from "@/components/cookie-consent";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   const { consent, grant, deny } = useCookieConsent();
 
+  // Initialize immediately for everyone — anonymous/sessionStorage mode
+  // until the visitor makes a choice on the banner.
   useEffect(() => {
-    if (consent === true) {
-      initPostHog();
+    initPostHog();
+  }, []);
+
+  useEffect(() => {
+    if (consent !== null) {
+      setAnalyticsConsent(consent);
     }
   }, [consent]);
 
