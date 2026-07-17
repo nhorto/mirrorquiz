@@ -3,6 +3,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { drizzle } from "drizzle-orm/d1";
 import { eq, and } from "drizzle-orm";
 import { getStripe } from "@/lib/stripe";
+import { generateNarrativeReport } from "@/lib/narrative";
 import * as schema from "@/db/schema";
 
 export async function POST(request: Request) {
@@ -99,6 +100,24 @@ export async function POST(request: Request) {
         stripeSessionId: session.id,
       })
       .where(eq(schema.purchases.id, purchaseId));
+
+    // Kick off narrative report generation in the background so it's ready
+    // by the time the buyer lands on the report page. Failures are fine —
+    // the report page generates on first view as a fallback.
+    if (env.ANTHROPIC_API_KEY) {
+      const { ctx } = await getCloudflareContext({ async: true });
+      const userRows = await db
+        .select({ name: schema.users.name })
+        .from(schema.users)
+        .where(eq(schema.users.id, userId))
+        .limit(1);
+      const creatorName = userRows[0]?.name?.trim() || "there";
+      ctx.waitUntil(
+        generateNarrativeReport(quizId, creatorName).catch((err) =>
+          console.error("Narrative generation at purchase failed:", err)
+        )
+      );
+    }
   }
 
   return NextResponse.json({ received: true });
