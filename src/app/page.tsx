@@ -10,7 +10,7 @@ export default function LandingPage() {
             Mirror<span className="gradient-brand-text">Quiz</span>
           </span>
           <Link
-            href="/login"
+            href="/start"
             className="gradient-brand rounded-full px-5 py-2 text-sm font-medium text-white transition-transform hover:scale-105"
           >
             Take the Quiz
@@ -40,7 +40,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
-              href="/login"
+              href="/start"
               className="gradient-brand rounded-full px-10 py-4 text-lg font-semibold text-white shadow-lg transition-transform hover:scale-105"
             >
               Discover Your Blind Spots
@@ -215,9 +215,10 @@ export default function LandingPage() {
                 <FeatureItem>Trait-by-trait breakdown</FeatureItem>
                 <FeatureItem>Blind spot analysis</FeatureItem>
                 <FeatureItem>Hidden strength insights</FeatureItem>
+                <FeatureItem>Written narrative report</FeatureItem>
               </ul>
               <Link
-                href="/login"
+                href="/start"
                 className="mt-8 block rounded-full border border-border py-3 text-center font-medium transition-colors hover:bg-accent"
               >
                 Get Started Free
@@ -249,9 +250,10 @@ export default function LandingPage() {
                 <FeatureItem included>Trait-by-trait breakdown</FeatureItem>
                 <FeatureItem included>Blind spot analysis</FeatureItem>
                 <FeatureItem included>Hidden strength insights</FeatureItem>
+                <FeatureItem included>Written narrative report</FeatureItem>
               </ul>
               <Link
-                href="/login"
+                href="/start"
                 className="gradient-brand mt-8 block rounded-full py-3 text-center font-medium text-white transition-transform hover:scale-105"
               >
                 Unlock Full Results
@@ -271,7 +273,7 @@ export default function LandingPage() {
             It takes 2 minutes. The insights last a lifetime.
           </p>
           <Link
-            href="/login"
+            href="/start"
             className="mt-8 inline-block rounded-full bg-white px-10 py-4 text-lg font-semibold text-foreground shadow-lg transition-transform hover:scale-105"
           >
             Create Your Free Quiz

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +33,15 @@ export default function RespondPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const startedRef = useRef(false);
+
+  function handleAnswer(questionId: string, score: number) {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackEvent("respond_started", { slug });
+    }
+    setResponses((prev) => ({ ...prev, [questionId]: score }));
+  }
 
   useEffect(() => {
     Promise.all([
@@ -84,7 +93,12 @@ export default function RespondPage() {
       return;
     }
 
-    trackEvent("response_submitted", { slug });
+    const { responseNumber } = (await res.json()) as { responseNumber?: number };
+    trackEvent("response_submitted", {
+      slug,
+      response_number: responseNumber,
+      is_first_response: responseNumber === 1,
+    });
     fbqTrack("CompleteRegistration");
     router.push(`/quiz/${slug}/thanks`);
   }
@@ -169,9 +183,7 @@ export default function RespondPage() {
             category={q.category}
             text={q.textFriend.replace(/\[Name\]/g, name)}
             value={responses[q.id] ?? null}
-            onChange={(score) =>
-              setResponses((prev) => ({ ...prev, [q.id]: score }))
-            }
+            onChange={(score) => handleAnswer(q.id, score)}
           />
         ))}
       </div>
