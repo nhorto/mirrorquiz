@@ -6,7 +6,9 @@ import {
   findHiddenStrengths,
   getPerceptionProfile,
   generateNarrativeSummary,
+  formatCategory,
 } from "@/lib/insights";
+import { getOrCreateNarrativeReport } from "@/lib/narrative";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { drizzle } from "drizzle-orm/d1";
 import { eq, and } from "drizzle-orm";
@@ -77,9 +79,25 @@ export default async function ReportPage({ params }: Props) {
   const profile = hasPurchased
     ? getPerceptionProfile(analysis.categories, analysis.matchPercentage, blindSpots.length, hiddenStrengths.length)
     : null;
-  const narrative = hasPurchased
-    ? generateNarrativeSummary(analysis.categories, analysis.matchPercentage, blindSpots, hiddenStrengths)
+
+  // LLM-written narrative report (generated once, cached in D1). Falls back
+  // to the rule-based summary when ANTHROPIC_API_KEY isn't configured.
+  const creatorName = session.user.name?.trim() || "there";
+  const narrativeReport = hasPurchased
+    ? await getOrCreateNarrativeReport(quizId, creatorName)
     : null;
+  const narrative =
+    hasPurchased && !narrativeReport
+      ? generateNarrativeSummary(analysis.categories, analysis.matchPercentage, blindSpots, hiddenStrengths)
+      : null;
+
+  const adviceFor = (type: "blind_spot" | "hidden_strength", category: string) =>
+    narrativeReport?.actions.find(
+      (a) =>
+        a.type === type &&
+        (a.category.toLowerCase() === category.toLowerCase() ||
+          a.category.toLowerCase() === formatCategory(category).toLowerCase())
+    )?.advice;
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
@@ -134,13 +152,27 @@ export default async function ReportPage({ params }: Props) {
             <PerceptionProfileCard profile={profile} />
           )}
 
-          {/* Narrative Summary */}
-          {narrative && (
+          {/* Narrative Report (LLM-written) or rule-based summary fallback */}
+          {narrativeReport ? (
+            <div className="rounded-2xl border border-violet/20 bg-card p-6 sm:p-8">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-xl">✍️</span>
+                <h2 className="text-lg font-bold">How Your Friends Really See You</h2>
+              </div>
+              <div className="space-y-4">
+                {narrativeReport.paragraphs.map((p, i) => (
+                  <p key={i} className="leading-relaxed text-foreground/90">
+                    {p}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ) : narrative ? (
             <div className="rounded-2xl border border-border bg-card p-6">
               <h2 className="text-lg font-bold mb-3">Your Perception Summary</h2>
               <p className="text-muted-foreground leading-relaxed">{narrative}</p>
             </div>
-          )}
+          ) : null}
 
           {/* Match Percentage + Radar — centerpiece treatment */}
           <div className="overflow-hidden rounded-3xl border-2 border-violet/20 bg-card shadow-xl shadow-violet/5">
@@ -195,7 +227,11 @@ export default async function ReportPage({ params }: Props) {
               </div>
               <div className="space-y-4">
                 {blindSpots.map((bs) => (
-                  <BlindSpotCard key={bs.textSelf} insight={bs} />
+                  <BlindSpotCard
+                    key={bs.textSelf}
+                    insight={bs}
+                    advice={adviceFor("blind_spot", bs.category)}
+                  />
                 ))}
               </div>
             </section>
@@ -219,7 +255,11 @@ export default async function ReportPage({ params }: Props) {
               </div>
               <div className="space-y-4">
                 {hiddenStrengths.map((hs) => (
-                  <HiddenStrengthCard key={hs.textSelf} insight={hs} />
+                  <HiddenStrengthCard
+                    key={hs.textSelf}
+                    insight={hs}
+                    advice={adviceFor("hidden_strength", hs.category)}
+                  />
                 ))}
               </div>
             </section>

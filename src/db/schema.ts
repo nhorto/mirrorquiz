@@ -224,3 +224,18 @@ export const emailNotifications = sqliteTable("email_notifications", {
     .notNull()
     .default(sql`(datetime('now'))`),
 });
+
+// ─── Narrative Reports (LLM-written, cached) ─────────────────────────
+export const narrativeReports = sqliteTable("narrative_reports", {
+  id: text("id").primaryKey(),
+  quizId: text("quiz_id")
+    .notNull()
+    .unique()
+    .references(() => quizzes.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  model: text("model").notNull(),
+  responseCount: integer("response_count").notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(datetime('now'))`),
+});

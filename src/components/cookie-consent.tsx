@@ -49,7 +49,8 @@ export function CookieConsent({
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card p-4 shadow-lg">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
         <p className="text-sm text-muted-foreground">
-          We use cookies for analytics to improve your experience.{" "}
+          We use anonymous, session-only analytics to see how the site is
+          used. Allow cookies so we can remember you across visits?{" "}
           <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">
             Privacy Policy
           </a>
