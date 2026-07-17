@@ -118,16 +118,12 @@ export default async function ResultsPage({ params }: Props) {
         <MatchPercentage percentage={analysis.matchPercentage} />
       </div>
 
-      {/* Radar Chart — blurred if not purchased */}
+      {/* Radar Chart — free for everyone, as promised on the pricing table */}
       <div className="mt-6 rounded-2xl border border-border bg-card p-6">
         <h2 className="mb-4 text-xl font-bold">
           Self vs. Friends Perception
         </h2>
-        {hasPurchased ? (
-          <PerceptionRadarChart categories={analysis.categories} />
-        ) : (
-          <PerceptionRadarChart categories={analysis.categories} blurred />
-        )}
+        <PerceptionRadarChart categories={analysis.categories} />
       </div>
 
       {/* Paywall CTA */}

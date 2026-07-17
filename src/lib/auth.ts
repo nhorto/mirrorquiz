@@ -1,11 +1,13 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { magicLink } from "better-auth/plugins";
+import { magicLink, anonymous } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { drizzle } from "drizzle-orm/d1";
+import { eq } from "drizzle-orm";
 import { Resend } from "resend";
 import * as schema from "@/db/schema";
+import { claimPendingQuizzes, migrateAnonymousUserData } from "@/lib/claim";
 
 async function createAuth() {
   const { env } = await getCloudflareContext({ async: true });
@@ -48,8 +50,40 @@ async function createAuth() {
         expiresIn: 600,
         disableSignUp: false,
       }),
+      anonymous({
+        emailDomainName: "anon.mirrorquiz.com",
+        // Same-browser link: magic link opened in the browser that still
+        // holds the anonymous session. Migrate before the plugin deletes
+        // the anonymous user (quizzes cascade-delete otherwise).
+        onLinkAccount: async ({ anonymousUser, newUser }) => {
+          await migrateAnonymousUserData(db, anonymousUser.user.id, newUser.user.id);
+          if (!newUser.user.name?.trim() && anonymousUser.user.name?.trim()) {
+            await db
+              .update(schema.users)
+              .set({ name: anonymousUser.user.name })
+              .where(eq(schema.users.id, newUser.user.id));
+          }
+        },
+      }),
       nextCookies(),
     ],
+    databaseHooks: {
+      session: {
+        create: {
+          // Cross-browser link: the magic link was opened in a different
+          // browser than the quiz was taken in (common inside TikTok/FB
+          // in-app browsers). Claims are keyed by email, so they resolve
+          // wherever the user signs in.
+          after: async (session) => {
+            try {
+              await claimPendingQuizzes(db, session.userId);
+            } catch (err) {
+              console.error("Failed to claim pending quizzes:", err);
+            }
+          },
+        },
+      },
+    },
     session: {
       expiresIn: 60 * 60 * 24 * 30, // 30 days
       updateAge: 60 * 60 * 24, // refresh daily
@@ -58,7 +92,13 @@ async function createAuth() {
       env.APP_URL ?? "http://localhost:8787",
       "http://localhost:3000",
       "http://localhost:8787",
+      "https://mirrorquiz.com",
       "https://www.mirrorquiz.com",
+      // wrangler dev simulates the production custom domain over plain http,
+      // so local requests arrive with an http://mirrorquiz.com origin.
+      ...(env.ENVIRONMENT !== "production"
+        ? ["http://mirrorquiz.com", "http://www.mirrorquiz.com"]
+        : []),
     ],
   });
 }
@@ -83,5 +123,6 @@ export const auth = betterAuth({
     magicLink({
       sendMagicLink: async () => {},
     }),
+    anonymous(),
   ],
 });
