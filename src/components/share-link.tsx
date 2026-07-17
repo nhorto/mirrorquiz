@@ -1,14 +1,19 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useSyncExternalStore } from "react";
 import { trackEvent, fbqTrackCustom } from "@/lib/analytics";
 
 const SHARE_TEXT = "How well do you actually know me? Take this 2-min quiz and find out";
 
+const emptySubscribe = () => () => {};
+
 export function ShareLink({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false);
-  const [origin, setOrigin] = useState("");
-  useEffect(() => setOrigin(window.location.origin), []);
+  const origin = useSyncExternalStore(
+    emptySubscribe,
+    () => window.location.origin,
+    () => ""
+  );
   const url = origin ? `${origin}/quiz/${slug}` : `/quiz/${slug}`;
 
   const handleCopy = useCallback(async () => {
