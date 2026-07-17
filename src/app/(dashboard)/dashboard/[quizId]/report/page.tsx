@@ -20,6 +20,7 @@ import { CategoryBreakdown } from "@/components/category-breakdown";
 import { BlindSpotCard } from "@/components/blind-spot-card";
 import { HiddenStrengthCard } from "@/components/hidden-strength-card";
 import { PerceptionProfileCard } from "@/components/perception-profile";
+import { ShareResultCard } from "@/components/share-result-card";
 
 interface Props {
   params: Promise<{ quizId: string }>;
@@ -185,6 +186,9 @@ export default async function ReportPage({ params }: Props) {
               <PerceptionRadarChart categories={analysis.categories} />
               <div className="mt-2 flex justify-center border-t border-border/60 pt-6">
                 <MatchPercentage percentage={analysis.matchPercentage} />
+              </div>
+              <div className="mt-6 border-t border-border/60 pt-6">
+                <ShareResultCard quizId={quizId} />
               </div>
             </div>
           </div>

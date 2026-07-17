@@ -11,6 +11,7 @@ import { PerceptionRadarChart } from "@/components/radar-chart";
 import { MatchPercentage } from "@/components/match-percentage";
 import { TrackEvent } from "@/components/track-event";
 import { CheckoutButton } from "@/components/checkout-button";
+import { ShareResultCard } from "@/components/share-result-card";
 
 interface Props {
   params: Promise<{ quizId: string }>;
@@ -134,6 +135,9 @@ export default async function ResultsPage({ params }: Props) {
           <PerceptionRadarChart categories={analysis.categories} />
           <div className="mt-2 flex justify-center border-t border-border/60 pt-6">
             <MatchPercentage percentage={analysis.matchPercentage} />
+          </div>
+          <div className="mt-6 border-t border-border/60 pt-6">
+            <ShareResultCard quizId={quizId} />
           </div>
         </div>
       </div>

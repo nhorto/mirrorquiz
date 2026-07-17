@@ -4,8 +4,6 @@ import { drizzle } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
 import * as schema from "@/db/schema";
 
-export const runtime = "edge";
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const slug = searchParams.get("slug");
@@ -118,6 +116,7 @@ export async function GET(request: Request) {
         >
           <div
             style={{
+              display: "flex",
               fontSize: "56px",
               fontWeight: 800,
               color: "#fafafa",
@@ -129,6 +128,7 @@ export async function GET(request: Request) {
           </div>
           <div
             style={{
+              display: "flex",
               fontSize: "56px",
               fontWeight: 800,
               lineHeight: 1.15,
@@ -139,13 +139,14 @@ export async function GET(request: Request) {
               marginTop: "4px",
             }}
           >
-            {name}?
+            {`${name}?`}
           </div>
         </div>
 
         {/* Subtitle */}
         <div
           style={{
+            display: "flex",
             fontSize: "22px",
             color: "#a1a1aa",
             marginTop: "32px",
@@ -164,15 +165,16 @@ export async function GET(request: Request) {
     }
   );
 
-  // Cache the generated image in KV (best-effort)
+  // Buffer once (avoids Response.clone() tee stalls in workerd), cache
+  // best-effort, and serve the buffer directly.
+  const buffer = await image.arrayBuffer();
   try {
-    const buffer = await image.clone().arrayBuffer();
     await env.OG_CACHE.put(cacheKey, buffer, { expirationTtl: 86400 });
   } catch {
     // KV write failed — that's fine, we'll generate next time
   }
 
-  return new Response(image.body, {
+  return new Response(buffer, {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "public, max-age=86400, s-maxage=86400",
