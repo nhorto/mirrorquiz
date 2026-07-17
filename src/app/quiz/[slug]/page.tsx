@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import * as schema from "@/db/schema";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { TrackEvent } from "@/components/track-event";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -73,6 +74,7 @@ export default async function QuizLandingPage({ params }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6">
+      <TrackEvent event="quiz_invite_viewed" properties={{ slug }} />
       {/* Decorative blobs */}
       <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-violet/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia/20 blur-3xl" />

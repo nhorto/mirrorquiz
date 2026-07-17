@@ -197,5 +197,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     success: true,
     slug: quizResults[0]!.slug,
+    responseNumber: newCount,
   });
 }
