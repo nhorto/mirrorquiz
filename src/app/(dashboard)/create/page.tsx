@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { QuestionCard } from "@/components/question-card";
@@ -22,6 +22,15 @@ export default function CreateQuizPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const startedRef = useRef(false);
+
+  function handleAnswer(questionId: string, score: number) {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackEvent("quiz_started", { flow: "authenticated" });
+    }
+    setResponses((prev) => ({ ...prev, [questionId]: score }));
+  }
 
   useEffect(() => {
     fetch("/api/questions")
@@ -66,7 +75,8 @@ export default function CreateQuizPage() {
     }
 
     const { slug } = (await res.json()) as { slug: string };
-    trackEvent("quiz_created", { slug });
+    trackEvent("quiz_completed", { flow: "authenticated" });
+    trackEvent("quiz_created", { slug, flow: "authenticated" });
     router.push(`/dashboard?created=${slug}`);
   }
 
@@ -120,9 +130,7 @@ export default function CreateQuizPage() {
             category={q.category}
             text={q.textSelf}
             value={responses[q.id] ?? null}
-            onChange={(score) =>
-              setResponses((prev) => ({ ...prev, [q.id]: score }))
-            }
+            onChange={(score) => handleAnswer(q.id, score)}
           />
         ))}
       </div>
