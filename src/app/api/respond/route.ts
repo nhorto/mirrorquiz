@@ -183,16 +183,22 @@ export async function POST(request: Request) {
 
   const newCount = updated[0]?.responseCount ?? 0;
 
-  // Send notification (fire-and-forget, don't block the response)
-  notifyNewResponse(
-    {
-      db: db as any,
-      resendApiKey: env.RESEND_API_KEY,
-      appUrl: env.APP_URL ?? "http://localhost:3000",
-    },
-    quizId,
-    newCount
-  ).catch((err) => console.error("Notification error:", err));
+  // Send notification without blocking the response. This MUST go through
+  // ctx.waitUntil — a bare floating promise gets cancelled by the Workers
+  // runtime as soon as the response is returned, which silently killed
+  // every notification email before.
+  const { ctx } = await getCloudflareContext({ async: true });
+  ctx.waitUntil(
+    notifyNewResponse(
+      {
+        db: db as any,
+        resendApiKey: env.RESEND_API_KEY,
+        appUrl: env.APP_URL ?? "http://localhost:3000",
+      },
+      quizId,
+      newCount
+    ).catch((err) => console.error("Notification error:", err))
+  );
 
   return NextResponse.json({
     success: true,
